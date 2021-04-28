@@ -13,7 +13,7 @@ Semester: SP21
 James Howe, Brillitte Orozco, Michael Gertz, Joseph Carluccio
 
 ## Project Information
-*Increment games based around COVID and DNA*
+*Increment game based around COVID and DNA, focused on producing more DNA per second*
 
 ## How to run it
 *Update this with information about how to build and run your project*
