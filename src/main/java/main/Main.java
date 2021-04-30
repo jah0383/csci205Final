@@ -1,6 +1,9 @@
 package main;
 
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class Main extends Application {
@@ -22,7 +25,16 @@ public class Main extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) {
+    public void start(Stage primaryStage) throws Exception {
+        theController = new GameController(theModel,theView);
+        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("GuiV1.fxml"));
+        primaryStage.setTitle("Covid Clicker");
+        primaryStage.setScene(new Scene(root));
+        primaryStage.show();
 
     }
+
+//    public void test(){
+//        System.out.println("hey");
+//    }
 }
