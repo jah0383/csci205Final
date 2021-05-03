@@ -121,7 +121,16 @@ public class GameController {
     public void initialize() {
 
 
+        linkAndBindProducers();
 
+
+    }
+
+    /**
+     * This method links everything in the scene to everything that's in the model
+     * @author James Howe
+     */
+    private void linkAndBindProducers() {
         for(int i = 1; i<this.theModel.getProducers().size(); i++){
             VBox producerVBox = (VBox) producer_pane.getChildren().get(i);
 
@@ -144,8 +153,6 @@ public class GameController {
             ChangeListener<Number> progressListener = (obs, oldValue, newValue) -> Platform.runLater(() -> progressBar.setProgress(newValue.doubleValue()));
             this.theModel.producers.get(i).progressProperty().addListener(progressListener);
         }
-
-
     }
 
     /**
@@ -192,13 +199,22 @@ public class GameController {
 
     }
 
+    /**
+     * This method is called whenever a producer button is pressed and handles the buying of producers
+     * @param event is passed in automatically
+     * @author James Howe
+     */
     @FXML
-    public void producerBuy(Event actionEvent) {
-        String nodeID = ((Node) actionEvent.getSource()).getId();
+    public void producerBuyHandler(Event event) {
+        //Gets the id from the node which called the event
+        String nodeID = ((Node) event.getSource()).getId();
         System.out.println(nodeID);
         int producerNumber = Integer.parseInt(nodeID.substring(1,2));
 
         this.theModel.getProducers().get(producerNumber - 1).buy();
+
+        //Testing
+        System.out.println(this.theModel.getProducers().get(producerNumber - 1).getDisplayCostForNext());
 
 
     }

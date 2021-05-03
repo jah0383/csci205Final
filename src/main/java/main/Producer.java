@@ -86,8 +86,11 @@ public class Producer implements Runnable {
         this.displayCostForNext = new SimpleStringProperty(this.costForNext.toString());
         this.displayCostForNext.bind(this.costForNext.asString());
 
+
+
         this.displayTotalGain = new SimpleStringProperty(this.totalGain.toString());
         this.displayTotalGain.bind(this.totalGain.asString());
+
 
         this.progress = new SimpleDoubleProperty(0.0);
 
@@ -111,6 +114,9 @@ public class Producer implements Runnable {
 
     //TODO JAVA DOC
     public void buy() {
+        this.costForNext.set(this.costForNext.get() + 1);
+        this.totalGain.set(this.totalGain.get() + 1);
+
     }
 
 
@@ -124,7 +130,7 @@ public class Producer implements Runnable {
             this.timeProperty.setValue(Long.toString(this.timeRemaining.getSeconds()));
             this.progress.set(1 - (double)timeRemaining.toSeconds()/(double)currentInterval.toSeconds());
             try {
-                Thread.sleep(200);
+                Thread.sleep(1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
