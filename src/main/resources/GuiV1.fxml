@@ -100,107 +100,162 @@
                   </VBox>
                   <VBox fx:id="P2" prefHeight="65.0" prefWidth="248.0">
                      <children>
-                        <VBox prefHeight="66.0" prefWidth="248.0">
+                        <HBox prefHeight="49.0" prefWidth="248.0">
                            <children>
-                              <HBox prefHeight="49.0" prefWidth="248.0">
+                              <Button fx:id="P2_btn" mnemonicParsing="false" onAction="#producerBuy" prefHeight="49.0" prefWidth="150.0" text="Name and description" />
+                              <VBox fx:id="P2_display" prefHeight="49.0" prefWidth="131.0">
                                  <children>
-                                    <Button mnemonicParsing="false" prefHeight="49.0" prefWidth="150.0" text="Name and description" />
-                                    <VBox fx:id="P2_display" prefHeight="49.0" prefWidth="131.0">
+                                    <HBox prefHeight="100.0" prefWidth="200.0">
                                        <children>
-                                          <Label prefHeight="18.0" prefWidth="115.0" text="Cost:" />
-                                          <Label prefHeight="17.0" prefWidth="154.0" text="Gain:" />
-                                          <Label fx:id="P2_time" prefHeight="17.0" prefWidth="148.0" text="Time Left:" />
+                                          <Label prefHeight="17.0" prefWidth="58.0" text="Cost:" />
+                                          <Label fx:id="P2_cost" prefHeight="18.0" prefWidth="115.0" text="0" />
                                        </children>
-                                    </VBox>
+                                    </HBox>
+                                    <HBox prefHeight="100.0" prefWidth="200.0">
+                                       <children>
+                                          <Label prefHeight="17.0" prefWidth="99.0" text="Gain:" />
+                                          <Label fx:id="P2_gain" prefHeight="17.0" prefWidth="154.0" text="0" />
+                                       </children>
+                                    </HBox>
+                                    <HBox prefHeight="100.0" prefWidth="200.0">
+                                       <children>
+                                          <Label prefHeight="17.0" prefWidth="148.0" text="Time Left:" />
+                                          <Label fx:id="P2_time" prefHeight="17.0" prefWidth="148.0" text="0" />
+                                       </children>
+                                    </HBox>
                                  </children>
-                              </HBox>
-                              <ProgressBar prefHeight="18.0" prefWidth="321.0" progress="0.0" />
+                              </VBox>
                            </children>
-                        </VBox>
+                        </HBox>
+                        <ProgressBar prefHeight="18.0" prefWidth="321.0" progress="0.0" />
                      </children>
                   </VBox>
                   <VBox fx:id="P3" prefHeight="65.0" prefWidth="248.0">
                      <children>
-                        <VBox prefHeight="66.0" prefWidth="248.0">
+                        <HBox prefHeight="49.0" prefWidth="248.0">
                            <children>
-                              <HBox prefHeight="49.0" prefWidth="248.0">
+                              <Button fx:id="P3_btn" mnemonicParsing="false" onAction="#producerBuy" prefHeight="49.0" prefWidth="150.0" text="Name and description" />
+                              <VBox fx:id="P3_display" prefHeight="49.0" prefWidth="131.0">
                                  <children>
-                                    <Button mnemonicParsing="false" prefHeight="49.0" prefWidth="150.0" text="Name and description" />
-                                    <VBox prefHeight="49.0" prefWidth="131.0">
+                                    <HBox prefHeight="100.0" prefWidth="200.0">
                                        <children>
-                                          <Label prefHeight="18.0" prefWidth="115.0" text="Cost:" />
-                                          <Label prefHeight="17.0" prefWidth="154.0" text="Gain:" />
-                                          <Label prefHeight="17.0" prefWidth="148.0" text="Time Left:" />
+                                          <Label prefHeight="17.0" prefWidth="58.0" text="Cost:" />
+                                          <Label fx:id="P3_cost" prefHeight="18.0" prefWidth="115.0" text="0" />
                                        </children>
-                                    </VBox>
+                                    </HBox>
+                                    <HBox prefHeight="100.0" prefWidth="200.0">
+                                       <children>
+                                          <Label prefHeight="17.0" prefWidth="99.0" text="Gain:" />
+                                          <Label fx:id="P3_gain" prefHeight="17.0" prefWidth="154.0" text="0" />
+                                       </children>
+                                    </HBox>
+                                    <HBox prefHeight="100.0" prefWidth="200.0">
+                                       <children>
+                                          <Label prefHeight="17.0" prefWidth="148.0" text="Time Left:" />
+                                          <Label fx:id="P3_time" prefHeight="17.0" prefWidth="148.0" text="0" />
+                                       </children>
+                                    </HBox>
                                  </children>
-                              </HBox>
-                              <ProgressBar prefHeight="18.0" prefWidth="321.0" progress="0.0" />
+                              </VBox>
                            </children>
-                        </VBox>
+                        </HBox>
+                        <ProgressBar prefHeight="18.0" prefWidth="321.0" progress="0.0" />
                      </children>
                   </VBox>
                   <VBox fx:id="P4" prefHeight="65.0" prefWidth="248.0">
                      <children>
-                        <VBox prefHeight="66.0" prefWidth="248.0">
+                        <HBox prefHeight="49.0" prefWidth="248.0">
                            <children>
-                              <HBox prefHeight="49.0" prefWidth="248.0">
+                              <Button fx:id="P4_btn" mnemonicParsing="false" onAction="#producerBuy" prefHeight="49.0" prefWidth="150.0" text="Name and description" />
+                              <VBox fx:id="P3_display1" prefHeight="49.0" prefWidth="131.0">
                                  <children>
-                                    <Button mnemonicParsing="false" prefHeight="49.0" prefWidth="150.0" text="Name and description" />
-                                    <VBox prefHeight="49.0" prefWidth="131.0">
+                                    <HBox prefHeight="100.0" prefWidth="200.0">
                                        <children>
-                                          <Label prefHeight="18.0" prefWidth="115.0" text="Cost:" />
-                                          <Label prefHeight="17.0" prefWidth="154.0" text="Gain:" />
-                                          <Label prefHeight="17.0" prefWidth="148.0" text="Time Left:" />
+                                          <Label prefHeight="17.0" prefWidth="58.0" text="Cost:" />
+                                          <Label fx:id="P4_cost" prefHeight="18.0" prefWidth="115.0" text="0" />
                                        </children>
-                                    </VBox>
+                                    </HBox>
+                                    <HBox prefHeight="100.0" prefWidth="200.0">
+                                       <children>
+                                          <Label prefHeight="17.0" prefWidth="99.0" text="Gain:" />
+                                          <Label fx:id="P4_gain" prefHeight="17.0" prefWidth="154.0" text="0" />
+                                       </children>
+                                    </HBox>
+                                    <HBox prefHeight="100.0" prefWidth="200.0">
+                                       <children>
+                                          <Label prefHeight="17.0" prefWidth="148.0" text="Time Left:" />
+                                          <Label fx:id="P4_time" prefHeight="17.0" prefWidth="148.0" text="0" />
+                                       </children>
+                                    </HBox>
                                  </children>
-                              </HBox>
-                              <ProgressBar prefHeight="18.0" prefWidth="321.0" progress="0.0" />
+                              </VBox>
                            </children>
-                        </VBox>
+                        </HBox>
+                        <ProgressBar prefHeight="18.0" prefWidth="321.0" progress="0.0" />
                      </children>
                   </VBox>
                   <VBox fx:id="P5" prefHeight="65.0" prefWidth="248.0">
                      <children>
-                        <VBox prefHeight="66.0" prefWidth="248.0">
+                        <HBox prefHeight="49.0" prefWidth="248.0">
                            <children>
-                              <HBox prefHeight="49.0" prefWidth="248.0">
+                              <Button fx:id="P5_btn" mnemonicParsing="false" onAction="#producerBuy" prefHeight="49.0" prefWidth="150.0" text="Name and description" />
+                              <VBox fx:id="P3_display2" prefHeight="49.0" prefWidth="131.0">
                                  <children>
-                                    <Button mnemonicParsing="false" prefHeight="49.0" prefWidth="150.0" text="Name and description" />
-                                    <VBox prefHeight="49.0" prefWidth="131.0">
+                                    <HBox prefHeight="100.0" prefWidth="200.0">
                                        <children>
-                                          <Label prefHeight="18.0" prefWidth="115.0" text="Cost:" />
-                                          <Label prefHeight="17.0" prefWidth="154.0" text="Gain:" />
-                                          <Label prefHeight="17.0" prefWidth="148.0" text="Time Left:" />
+                                          <Label prefHeight="17.0" prefWidth="58.0" text="Cost:" />
+                                          <Label fx:id="P5_cost" prefHeight="18.0" prefWidth="115.0" text="0" />
                                        </children>
-                                    </VBox>
+                                    </HBox>
+                                    <HBox prefHeight="100.0" prefWidth="200.0">
+                                       <children>
+                                          <Label prefHeight="17.0" prefWidth="99.0" text="Gain:" />
+                                          <Label fx:id="P5_gain" prefHeight="17.0" prefWidth="154.0" text="0" />
+                                       </children>
+                                    </HBox>
+                                    <HBox prefHeight="100.0" prefWidth="200.0">
+                                       <children>
+                                          <Label prefHeight="17.0" prefWidth="148.0" text="Time Left:" />
+                                          <Label fx:id="P5_time" prefHeight="17.0" prefWidth="148.0" text="0" />
+                                       </children>
+                                    </HBox>
                                  </children>
-                              </HBox>
-                              <ProgressBar prefHeight="18.0" prefWidth="321.0" progress="0.0" />
+                              </VBox>
                            </children>
-                        </VBox>
+                        </HBox>
+                        <ProgressBar prefHeight="18.0" prefWidth="321.0" progress="0.0" />
                      </children>
                   </VBox>
                   <VBox fx:id="P6" prefHeight="65.0" prefWidth="248.0">
                      <children>
-                        <VBox prefHeight="66.0" prefWidth="248.0">
+                        <HBox prefHeight="49.0" prefWidth="248.0">
                            <children>
-                              <HBox prefHeight="49.0" prefWidth="248.0">
+                              <Button fx:id="P6_btn" mnemonicParsing="false" onAction="#producerBuy" prefHeight="49.0" prefWidth="150.0" text="Name and description" />
+                              <VBox fx:id="P3_display3" prefHeight="49.0" prefWidth="131.0">
                                  <children>
-                                    <Button mnemonicParsing="false" prefHeight="49.0" prefWidth="150.0" text="Name and description" />
-                                    <VBox prefHeight="49.0" prefWidth="131.0">
+                                    <HBox prefHeight="100.0" prefWidth="200.0">
                                        <children>
-                                          <Label prefHeight="18.0" prefWidth="115.0" text="Cost:" />
-                                          <Label prefHeight="17.0" prefWidth="154.0" text="Gain:" />
-                                          <Label prefHeight="17.0" prefWidth="148.0" text="Time Left:" />
+                                          <Label prefHeight="17.0" prefWidth="58.0" text="Cost:" />
+                                          <Label fx:id="P6_cost" prefHeight="18.0" prefWidth="115.0" text="0" />
                                        </children>
-                                    </VBox>
+                                    </HBox>
+                                    <HBox prefHeight="100.0" prefWidth="200.0">
+                                       <children>
+                                          <Label prefHeight="17.0" prefWidth="99.0" text="Gain:" />
+                                          <Label fx:id="P6_gain" prefHeight="17.0" prefWidth="154.0" text="0" />
+                                       </children>
+                                    </HBox>
+                                    <HBox prefHeight="100.0" prefWidth="200.0">
+                                       <children>
+                                          <Label prefHeight="17.0" prefWidth="148.0" text="Time Left:" />
+                                          <Label fx:id="P6_time" prefHeight="17.0" prefWidth="148.0" text="0" />
+                                       </children>
+                                    </HBox>
                                  </children>
-                              </HBox>
-                              <ProgressBar prefHeight="18.0" prefWidth="321.0" progress="0.0" />
+                              </VBox>
                            </children>
-                        </VBox>
+                        </HBox>
+                        <ProgressBar prefHeight="18.0" prefWidth="321.0" progress="0.0" />
                      </children>
                      <opaqueInsets>
                         <Insets />

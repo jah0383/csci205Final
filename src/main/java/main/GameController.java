@@ -2,14 +2,15 @@ package main;
 
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
+import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
 
+import javafx.event.Event;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
+import javafx.scene.Node;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 public class GameController {
@@ -32,6 +33,12 @@ public class GameController {
 
     @FXML
     private VBox P2_display;
+
+    @FXML
+    private Label P2_cost;
+
+    @FXML
+    private Label P2_gain;
 
     @FXML
     private Label P2_time;
@@ -112,11 +119,33 @@ public class GameController {
 
     @FXML
     public void initialize() {
-//        System.out.println(this.theModel.producers.get(1).timePropertyProperty());
-        System.out.println(P2_time);
-        //P2_time.textProperty().bind(this.theModel.producers.get(1).timePropertyProperty().asString());
-        this.theModel.producers.get(1).timePropertyProperty().asString().addListener((obs, oldValue, newValue) ->
-                Platform.runLater(() -> P2_time.textProperty().set(newValue)));
+
+
+
+        for(int i = 1; i<this.theModel.getProducers().size(); i++){
+            VBox producerVBox = (VBox) producer_pane.getChildren().get(i);
+
+            VBox displayVBox = (VBox) ((HBox) producerVBox.getChildren().get(0)).getChildren().get(1);
+
+            Label costLabel = (Label) ((HBox)displayVBox.getChildren().get(0)).getChildren().get(1);
+            Label gainLabel = (Label) ((HBox)displayVBox.getChildren().get(1)).getChildren().get(1);
+            Label timeLabel = (Label) ((HBox)displayVBox.getChildren().get(2)).getChildren().get(1);
+
+            ProgressBar progressBar = (ProgressBar) producerVBox.getChildren().get(1);
+
+
+            ChangeListener<String> costListener = (obs, oldStatus, newStatus) -> Platform.runLater(() -> costLabel.setText(newStatus));
+            ChangeListener<String> gainListener = (obs, oldStatus, newStatus) -> Platform.runLater(() -> gainLabel.setText(newStatus));
+            ChangeListener<String> timeListener = (obs, oldValue, newValue) -> Platform.runLater(() -> timeLabel.textProperty().set(newValue));
+            this.theModel.producers.get(i).displayCostForNextProperty().addListener(costListener);
+            this.theModel.producers.get(i).displayTotalGainProperty().addListener(gainListener);
+            this.theModel.producers.get(i).timePropertyProperty().addListener(timeListener);
+
+            ChangeListener<Number> progressListener = (obs, oldValue, newValue) -> Platform.runLater(() -> progressBar.setProgress(newValue.doubleValue()));
+            this.theModel.producers.get(i).progressProperty().addListener(progressListener);
+        }
+
+
     }
 
     /**
@@ -154,11 +183,23 @@ public class GameController {
 
     }
 
+    @FXML
     public void test(ActionEvent actionEvent) throws InterruptedException {
-        System.out.println("test");
-        System.out.println(this.theModel.producers.get(1).timePropertyProperty());
+//        System.out.println("test");
+//        System.out.println(this.theModel.producers.get(1).timePropertyProperty());
         new Thread(this.theModel.producers.get(1)).start();
         //this.theModel.producers.get(1).run(5);
+
+    }
+
+    @FXML
+    public void producerBuy(Event actionEvent) {
+        String nodeID = ((Node) actionEvent.getSource()).getId();
+        System.out.println(nodeID);
+        int producerNumber = Integer.parseInt(nodeID.substring(1,2));
+
+        this.theModel.getProducers().get(producerNumber - 1).buy();
+
 
     }
 }

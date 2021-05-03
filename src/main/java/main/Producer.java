@@ -19,7 +19,9 @@
  */
 package main;
 
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleLongProperty;
+import javafx.beans.property.SimpleStringProperty;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -32,13 +34,29 @@ public class Producer implements Runnable {
 
 
 
-    private double initialPeriod;
+    private long initialPeriod;
     private double costMult;
-    private long costForNext;
+    private SimpleLongProperty costForNext;
+    private SimpleStringProperty displayCostForNext;
     private Duration currentInterval;
     private Duration timeRemaining;
-    private SimpleLongProperty timeProperty;
-    private long totalGain;
+
+    private SimpleLongProperty totalGain;
+
+    private SimpleDoubleProperty progress;
+
+
+
+    private SimpleStringProperty timeProperty; //TODO change this to string, add an update/format for it
+
+
+
+
+
+
+
+
+    private SimpleStringProperty displayTotalGain;
     private int numberPurchased;
     private double gainMult;
     private double periodMult;
@@ -47,21 +65,32 @@ public class Producer implements Runnable {
     public Producer(String name,
                     long initialCost,
                     long initialGain,
-                    double initialPeriod,
+                    long initialPeriod,
                     double costMult) {
         this.name = name;
         this.initialCost = initialCost;
         this.initialGain = initialGain;
         this.initialPeriod = initialPeriod;
         this.costMult = costMult;
-        this.costForNext = this.initialCost;
-        this.currentInterval = Duration.ofSeconds((long)initialPeriod);
+        this.costForNext = new SimpleLongProperty(this.initialCost);
+        this.currentInterval = Duration.ofSeconds(initialPeriod);
         this.timeRemaining = this.currentInterval;
-        this.timeProperty = new SimpleLongProperty((long)initialPeriod);
-        this.totalGain = 0;
+        this.timeProperty = new SimpleStringProperty(Double.toString(initialPeriod));
+        this.totalGain = new SimpleLongProperty(0);
         this.numberPurchased = 0;
         this.gainMult = 1;
         this.periodMult = 1;
+
+
+
+        this.displayCostForNext = new SimpleStringProperty(this.costForNext.toString());
+        this.displayCostForNext.bind(this.costForNext.asString());
+
+        this.displayTotalGain = new SimpleStringProperty(this.totalGain.toString());
+        this.displayTotalGain.bind(this.totalGain.asString());
+
+        this.progress = new SimpleDoubleProperty(0.0);
+
     }
 
     /**
@@ -76,54 +105,26 @@ public class Producer implements Runnable {
      * @return totalGain - long value of the gain of the producer
      */
     public long getGain(Duration timerInterval){
-        return totalGain;
-    }
-
-    public void runTest(int seconds){
-        this.timeProperty.setValue(this.timeProperty.get()+1);
-//        timeRemaining = Duration.ofSeconds(seconds);
-//
-//
-//        LocalDateTime timeInitialized = LocalDateTime.now();
-//        LocalDateTime timeEnd = timeInitialized.plusSeconds(seconds);
-//        while (true){
-//            this.timeProperty.set(this.timeRemaining.getNano());
-//            System.out.println(this.getTimeProperty());
-//            System.out.print("Time remaining: "+ timeRemaining + " seconds.");
-//            LocalDateTime timeNow = LocalDateTime.now();
-//            System.out.println(" It is now: " + timeNow);
-//            timeRemaining = Duration.between(timeNow, timeEnd);
-//            if (timeRemaining.isNegative()){
-//                timeRemaining = Duration.ofSeconds(seconds);
-//                timeNow = LocalDateTime.now();
-//                timeEnd = timeNow.plusSeconds(seconds);
-//                getGain(timeRemaining);
-//                break;
-//            }
-//        }
+        return totalGain.get();
     }
 
 
-
-    public long getTimeProperty() {
-        return this.timeProperty.get();
+    //TODO JAVA DOC
+    public void buy() {
     }
 
-    public SimpleLongProperty timePropertyProperty() {
-        return this.timeProperty;
-    }
 
     @Override
     public void run() {
-        int seconds = 5;
+        long seconds = currentInterval.toSeconds();
         timeRemaining = Duration.ofSeconds(seconds);
         LocalDateTime timeInitialized = LocalDateTime.now();
         LocalDateTime timeEnd = timeInitialized.plusSeconds(seconds);
         while (true){
-            this.timeProperty.setValue(this.timeRemaining.getSeconds());
-            System.out.println(this.getTimeProperty());
+            this.timeProperty.setValue(Long.toString(this.timeRemaining.getSeconds()));
+            this.progress.set(1 - (double)timeRemaining.toSeconds()/(double)currentInterval.toSeconds());
             try {
-                Thread.sleep(1000);
+                Thread.sleep(200);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -141,10 +142,37 @@ public class Producer implements Runnable {
     }
 
 
-//    public static void main(String[] args) throws InterruptedException {
-//        Producer newCell = new Producer();
-//        newCell.run(5);
-//    }
+
+    public double getProgress() {
+        return progress.get();
+    }
+
+    public SimpleDoubleProperty progressProperty() {
+        return progress;
+    }
+    public String getDisplayTotalGain() {
+        return displayTotalGain.get();
+    }
+
+    public SimpleStringProperty displayTotalGainProperty() {
+        return displayTotalGain;
+    }
+
+    public String getDisplayCostForNext() {
+        return displayCostForNext.get();
+    }
+
+    public SimpleStringProperty displayCostForNextProperty() {
+        return displayCostForNext;
+    }
+
+    public String getTimeProperty() {
+        return timeProperty.get();
+    }
+
+    public SimpleStringProperty timePropertyProperty() {
+        return timeProperty;
+    }
 
 
 }

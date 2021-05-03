@@ -26,6 +26,10 @@ public class GameModel {
      */
     private String saveDataFilePath;
 
+    public ArrayList<Producer> getProducers() {
+        return producers;
+    }
+
     /**
      * The list of producers
      */
@@ -35,7 +39,11 @@ public class GameModel {
     public GameModel(){
         this.producers = new ArrayList<>();
         this.producers.add(new Producer("P1",1,1,1,1.1));
-        this.producers.add(new Producer("P2",1,1,1,1.1));
+        this.producers.add(new Producer("P2",1,1,10,1.1));
+        this.producers.add(new Producer("P3",1,1,10,1.1));
+        this.producers.add(new Producer("P4",1,1,10,1.1));
+        this.producers.add(new Producer("P5",1,1,10,1.1));
+        this.producers.add(new Producer("P6",1,1,10,1.1));
     }
 
 
