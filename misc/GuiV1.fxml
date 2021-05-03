@@ -52,7 +52,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="400.0" prefWidth="493.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.GameController">
+<VBox prefHeight="400.0" prefWidth="493.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
   <children>
     <MenuBar VBox.vgrow="NEVER">
       <menus>
@@ -72,6 +72,20 @@
             <MenuItem mnemonicParsing="false" text="Quit" />
           </items>
         </Menu>
+        <Menu mnemonicParsing="false" text="Edit">
+          <items>
+            <MenuItem mnemonicParsing="false" text="Undo" />
+            <MenuItem mnemonicParsing="false" text="Redo" />
+            <SeparatorMenuItem mnemonicParsing="false" />
+            <MenuItem mnemonicParsing="false" text="Cut" />
+            <MenuItem mnemonicParsing="false" text="Copy" />
+            <MenuItem mnemonicParsing="false" text="Paste" />
+            <MenuItem mnemonicParsing="false" text="Delete" />
+            <SeparatorMenuItem mnemonicParsing="false" />
+            <MenuItem mnemonicParsing="false" text="Select All" />
+            <MenuItem mnemonicParsing="false" text="Unselect All" />
+          </items>
+        </Menu>
         <Menu mnemonicParsing="false" text="Help">
           <items>
             <MenuItem mnemonicParsing="false" text="About MyHelloApp" />
@@ -87,7 +101,7 @@
                      <children>
                         <HBox prefHeight="49.0" prefWidth="248.0">
                            <children>
-                              <Button fx:id="P1_btn" mnemonicParsing="false" onAction="#test" prefHeight="49.0" prefWidth="150.0" text="Test" />
+                              <Button mnemonicParsing="false" prefHeight="49.0" prefWidth="150.0" text="Name and description" />
                               <VBox prefHeight="49.0" prefWidth="131.0">
                                  <children>
                                     <Label prefHeight="59.0" prefWidth="124.0" text="Gain/Click" />
@@ -105,11 +119,11 @@
                               <HBox prefHeight="49.0" prefWidth="248.0">
                                  <children>
                                     <Button mnemonicParsing="false" prefHeight="49.0" prefWidth="150.0" text="Name and description" />
-                                    <VBox fx:id="P2_display" prefHeight="49.0" prefWidth="131.0">
+                                    <VBox prefHeight="49.0" prefWidth="131.0">
                                        <children>
                                           <Label prefHeight="18.0" prefWidth="115.0" text="Cost:" />
                                           <Label prefHeight="17.0" prefWidth="154.0" text="Gain:" />
-                                          <Label fx:id="P2_time" prefHeight="17.0" prefWidth="148.0" text="Time Left:" />
+                                          <Label prefHeight="17.0" prefWidth="148.0" text="Time Left:" />
                                        </children>
                                     </VBox>
                                  </children>
@@ -210,34 +224,16 @@
             </VBox>
             <VBox prefHeight="375.0" prefWidth="408.0">
                <children>
-                  <HBox prefHeight="32.0" prefWidth="245.0">
-                     <children>
-                        <Label fx:id="dna_label" prefHeight="35.0" prefWidth="57.0" text="DNA:">
-                           <font>
-                              <Font size="24.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="dna_label1" text="0">
-                           <font>
-                              <Font size="24.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </HBox>
-                  <HBox prefHeight="34.0" prefWidth="245.0">
-                     <children>
-                        <Label fx:id="dna_per_second" prefHeight="27.0" prefWidth="166.0" text="DNA/SEC:">
-                           <font>
-                              <Font size="18.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="dna_per_second1" prefHeight="25.0" prefWidth="245.0" text="0">
-                           <font>
-                              <Font size="18.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </HBox>
+                  <Label fx:id="dna_label" prefHeight="27.0" prefWidth="245.0" text="DNA">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="dna_per_second" prefHeight="6.0" prefWidth="245.0" text="DNA/SEC">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
                   <HBox prefHeight="0.0" prefWidth="245.0">
                      <children>
                         <Button fx:id="buy_1x" mnemonicParsing="false" prefHeight="25.0" prefWidth="52.0" text="1x" />

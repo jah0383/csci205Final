@@ -1,6 +1,7 @@
 package main;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 /**
  * This class serves as the model for the incremental game,
@@ -24,5 +25,22 @@ public class GameModel {
      * String of the file path the user wants the game to be saved at
      */
     private String saveDataFilePath;
+
+    /**
+     * The list of producers
+     */
+    public ArrayList<Producer> producers;
+
+
+    public GameModel(){
+        this.producers = new ArrayList<>();
+        this.producers.add(new Producer("P1",1,1,1,1.1));
+        this.producers.add(new Producer("P2",1,1,1,1.1));
+    }
+
+
+
+
+
 
 }

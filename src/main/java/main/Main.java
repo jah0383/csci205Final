@@ -8,6 +8,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.net.URL;
+
 public class Main extends Application {
 
     private GameModel theModel;
@@ -21,15 +23,28 @@ public class Main extends Application {
     @Override
     public void init() throws Exception{
         super.init();
-        this.theModel = new GameModel();
-        this.theView = new GameView(theModel);
+        theModel = new GameModel();
+        theView = new GameView(theModel);
+
 
     }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        theController = new GameController(theView,theModel);
-        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("GuiV1.fxml"));
+
+
+
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/GuiV1.fxml"));
+        Parent root = loader.load();
+
+        theController = new GameController();
+        theController.setupController(theModel,theView);
+//        theController.initialize();
+
+
+
+
         primaryStage.setTitle("Covid Clicker");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
