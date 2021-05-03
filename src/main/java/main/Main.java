@@ -1,6 +1,8 @@
 package main;
 
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -12,7 +14,7 @@ public class Main extends Application {
     private GameView theView;
     private GameController theController;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         launch(args);
     }
 
@@ -26,7 +28,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        theController = new GameController(theModel,theView);
+        theController = new GameController(theView,theModel);
         Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("GuiV1.fxml"));
         primaryStage.setTitle("Covid Clicker");
         primaryStage.setScene(new Scene(root));
@@ -34,7 +36,8 @@ public class Main extends Application {
 
     }
 
-//    public void test(){
-//        System.out.println("hey");
+//    public static void test() throws InterruptedException {
+//        Producer newCell = new Producer();
+//        newCell.run(5);
 //    }
 }

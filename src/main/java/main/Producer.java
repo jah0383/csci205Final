@@ -20,6 +20,7 @@
 package main;
 
 import java.time.Duration;
+import java.time.LocalDateTime;
 
 public class Producer {
 
@@ -52,6 +53,29 @@ public class Producer {
         return totalGain;
     }
 
+    public void run(int seconds) throws InterruptedException {
+        timeRemaining = Duration.ofSeconds(seconds);
+        LocalDateTime timeInitialized = LocalDateTime.now();
+        LocalDateTime timeEnd = timeInitialized.plusSeconds(seconds);
+        while (true){
+            Thread.sleep(1000);
+            System.out.print("Time remaining: "+ timeRemaining + " seconds.");
+            LocalDateTime timeNow = LocalDateTime.now();
+            System.out.println(" It is now: " + timeNow);
+            timeRemaining = Duration.between(timeNow, timeEnd);
+            if (timeRemaining.isNegative()){
+                timeRemaining = Duration.ofSeconds(seconds);
+                timeNow = LocalDateTime.now();
+                timeEnd = timeNow.plusSeconds(seconds);
+                getGain(timeRemaining);
+            }
+        }
+    }
+
+    public static void main(String[] args) throws InterruptedException {
+        Producer newCell = new Producer();
+        newCell.run(5);
+    }
 
 
 }

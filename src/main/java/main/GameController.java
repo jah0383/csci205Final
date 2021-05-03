@@ -1,5 +1,7 @@
 package main;
 
+import javafx.event.ActionEvent;
+
 public class GameController {
 
     // view and model loaded in
@@ -50,5 +52,10 @@ public class GameController {
      */
     private void loadFromSave() {
 
+    }
+
+    public void test(ActionEvent actionEvent) throws InterruptedException {
+        Producer newCell = new Producer();
+        newCell.run(5);
     }
 }
