@@ -1,5 +1,6 @@
 package main;
 
+import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.event.ActionEvent;
 
@@ -113,7 +114,9 @@ public class GameController {
     public void initialize() {
 //        System.out.println(this.theModel.producers.get(1).timePropertyProperty());
         System.out.println(P2_time);
-        P2_time.textProperty().bind(this.theModel.producers.get(1).timePropertyProperty().asString());
+        //P2_time.textProperty().bind(this.theModel.producers.get(1).timePropertyProperty().asString());
+        this.theModel.producers.get(1).timePropertyProperty().asString().addListener((obs, oldValue, newValue) ->
+                Platform.runLater(() -> P2_time.textProperty().set(newValue)));
     }
 
     /**
