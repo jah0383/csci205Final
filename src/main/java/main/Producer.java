@@ -26,7 +26,7 @@ import javafx.beans.property.SimpleStringProperty;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
-public class Producer {
+public class Producer implements Runnable {
 
     private String name;
     private long initialCost;
@@ -82,30 +82,26 @@ public class Producer {
     }
 
     //TODO JAVA DOC
-    public void run(int seconds) throws InterruptedException {
-
-        timeRemaining = Duration.ofSeconds(seconds);
-
-
-        LocalDateTime timeInitialized = LocalDateTime.now();
-        LocalDateTime timeEnd = timeInitialized.plusSeconds(seconds);
-        while (true){
-            this.timeProperty.setValue(this.timeRemaining.getSeconds());
-            System.out.println(this.getTimeProperty());
-            Thread.sleep(1000);
-            System.out.print("Time remaining: "+ timeRemaining + " seconds.");
-            LocalDateTime timeNow = LocalDateTime.now();
-            System.out.println(" It is now: " + timeNow);
-            timeRemaining = Duration.between(timeNow, timeEnd);
-            if (timeRemaining.isNegative()){
-                timeRemaining = Duration.ofSeconds(seconds);
-                timeNow = LocalDateTime.now();
-                timeEnd = timeNow.plusSeconds(seconds);
-                getGain(timeRemaining);
-                break;
-            }
-        }
-    }
+//    public void run(int seconds) throws InterruptedException {
+//        timeRemaining = Duration.ofSeconds(seconds);
+//        LocalDateTime timeInitialized = LocalDateTime.now();
+//        LocalDateTime timeEnd = timeInitialized.plusSeconds(seconds);
+//        while (true){
+//            this.timeProperty.setValue(this.timeRemaining.getSeconds());
+//            System.out.println(this.getTimeProperty());
+//            Thread.sleep(1000);
+//            System.out.print("Time remaining: "+ timeRemaining + " seconds.");
+//            LocalDateTime timeNow = LocalDateTime.now();
+//            System.out.println(" It is now: " + timeNow);
+//            timeRemaining = Duration.between(timeNow, timeEnd);
+//            if (timeRemaining.isNegative()){
+//                timeRemaining = Duration.ofSeconds(seconds);
+//                timeNow = LocalDateTime.now();
+//                timeEnd = timeNow.plusSeconds(seconds);
+//                getGain(timeRemaining);
+//            }
+//        }
+//    }
 
     public void runTest(int seconds){
         this.timeProperty.setValue(this.timeProperty.get()+1);
@@ -139,6 +135,33 @@ public class Producer {
 
     public SimpleLongProperty timePropertyProperty() {
         return this.timeProperty;
+    }
+
+    @Override
+    public void run() {
+        int seconds = 5;
+        timeRemaining = Duration.ofSeconds(seconds);
+        LocalDateTime timeInitialized = LocalDateTime.now();
+        LocalDateTime timeEnd = timeInitialized.plusSeconds(seconds);
+        while (true){
+            this.timeProperty.setValue(this.timeRemaining.getSeconds());
+            System.out.println(this.getTimeProperty());
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            System.out.print("Time remaining: "+ timeRemaining + " seconds.");
+            LocalDateTime timeNow = LocalDateTime.now();
+            System.out.println(" It is now: " + timeNow);
+            timeRemaining = Duration.between(timeNow, timeEnd);
+            if (timeRemaining.isNegative()){
+                timeRemaining = Duration.ofSeconds(seconds);
+                timeNow = LocalDateTime.now();
+                timeEnd = timeNow.plusSeconds(seconds);
+                getGain(timeRemaining);
+            }
+        }
     }
 
 

@@ -154,7 +154,8 @@ public class GameController {
     public void test(ActionEvent actionEvent) throws InterruptedException {
         System.out.println("test");
         System.out.println(this.theModel.producers.get(1).timePropertyProperty());
-        this.theModel.producers.get(1).run(5);
+        new Thread(this.theModel.producers.get(1)).start();
+        //this.theModel.producers.get(1).run(5);
 
     }
 }
