@@ -1,7 +1,9 @@
 package main;
 
 import javafx.application.Platform;
+import javafx.beans.InvalidationListener;
 import javafx.beans.binding.Bindings;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
 
@@ -113,17 +115,11 @@ public class GameController {
 //        P2_time = new Label();
 //        System.out.println(this.theModel.producers.get(1).timePropertyProperty());
 //        System.out.println(P2_time.textProperty().toString());
-
-
     }
 
     @FXML
     public void initialize() {
-
-
         linkAndBindProducers();
-
-
     }
 
     /**
@@ -131,14 +127,14 @@ public class GameController {
      * @author James Howe
      */
     private void linkAndBindProducers() {
-        for(int i = 1; i<this.theModel.getProducers().size(); i++){
+        for (int i = 1; i < this.theModel.getProducers().size(); i++) {
             VBox producerVBox = (VBox) producer_pane.getChildren().get(i);
 
             VBox displayVBox = (VBox) ((HBox) producerVBox.getChildren().get(0)).getChildren().get(1);
 
-            Label costLabel = (Label) ((HBox)displayVBox.getChildren().get(0)).getChildren().get(1);
-            Label gainLabel = (Label) ((HBox)displayVBox.getChildren().get(1)).getChildren().get(1);
-            Label timeLabel = (Label) ((HBox)displayVBox.getChildren().get(2)).getChildren().get(1);
+            Label costLabel = (Label) ((HBox) displayVBox.getChildren().get(0)).getChildren().get(1);
+            Label gainLabel = (Label) ((HBox) displayVBox.getChildren().get(1)).getChildren().get(1);
+            Label timeLabel = (Label) ((HBox) displayVBox.getChildren().get(2)).getChildren().get(1);
 
             ProgressBar progressBar = (ProgressBar) producerVBox.getChildren().get(1);
 
@@ -146,9 +142,11 @@ public class GameController {
             ChangeListener<String> costListener = (obs, oldStatus, newStatus) -> Platform.runLater(() -> costLabel.setText(newStatus));
             ChangeListener<String> gainListener = (obs, oldStatus, newStatus) -> Platform.runLater(() -> gainLabel.setText(newStatus));
             ChangeListener<String> timeListener = (obs, oldValue, newValue) -> Platform.runLater(() -> timeLabel.textProperty().set(newValue));
+            ChangeListener<String> dnaListener = (obs, oldValue, newValue) -> Platform.runLater(() -> dna_label1.setText(newValue));
             this.theModel.producers.get(i).displayCostForNextProperty().addListener(costListener);
             this.theModel.producers.get(i).displayTotalGainProperty().addListener(gainListener);
             this.theModel.producers.get(i).timePropertyProperty().addListener(timeListener);
+            this.theModel.producers.get(i).getDnaProduced().addListener(dnaListener);
 
             ChangeListener<Number> progressListener = (obs, oldValue, newValue) -> Platform.runLater(() -> progressBar.setProgress(newValue.doubleValue()));
             this.theModel.producers.get(i).progressProperty().addListener(progressListener);
@@ -215,7 +213,6 @@ public class GameController {
 
         //Testing
         System.out.println(this.theModel.getProducers().get(producerNumber - 1).getDisplayCostForNext());
-
 
     }
 }

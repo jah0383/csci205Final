@@ -47,8 +47,8 @@ public class GameModel {
     }
 
 
-
-
-
+    public long getTotalDNA() {
+        return totalDNA;
+    }
 
 }

@@ -42,13 +42,10 @@ public class Producer implements Runnable {
     private Duration timeRemaining;
 
     private SimpleLongProperty totalGain;
-
     private SimpleDoubleProperty progress;
-
-
-
     private SimpleStringProperty timeProperty; //TODO change this to string, add an update/format for it
-
+    private SimpleDoubleProperty dnaProduced;
+    private SimpleStringProperty displayDnaProduced;
 
 
 
@@ -81,16 +78,15 @@ public class Producer implements Runnable {
         this.gainMult = 1;
         this.periodMult = 1;
 
-
+        this.dnaProduced = new SimpleDoubleProperty(0);
+        this.displayDnaProduced = new SimpleStringProperty(this.dnaProduced.toString());
+        this.displayDnaProduced.bind(this.dnaProduced.asString());
 
         this.displayCostForNext = new SimpleStringProperty(this.costForNext.toString());
         this.displayCostForNext.bind(this.costForNext.asString());
 
-
-
         this.displayTotalGain = new SimpleStringProperty(this.totalGain.toString());
         this.displayTotalGain.bind(this.totalGain.asString());
-
 
         this.progress = new SimpleDoubleProperty(0.0);
 
@@ -143,39 +139,36 @@ public class Producer implements Runnable {
                 timeNow = LocalDateTime.now();
                 timeEnd = timeNow.plusSeconds(seconds);
                 getGain(timeRemaining);
+                dnaProduced.set(5 + dnaProduced.getValue());
+                System.out.println(dnaProduced);
             }
         }
     }
 
-
-
+    public SimpleStringProperty getDnaProduced() {
+        return displayDnaProduced;
+    }
     public double getProgress() {
         return progress.get();
     }
-
     public SimpleDoubleProperty progressProperty() {
         return progress;
     }
     public String getDisplayTotalGain() {
         return displayTotalGain.get();
     }
-
     public SimpleStringProperty displayTotalGainProperty() {
         return displayTotalGain;
     }
-
     public String getDisplayCostForNext() {
         return displayCostForNext.get();
     }
-
     public SimpleStringProperty displayCostForNextProperty() {
         return displayCostForNext;
     }
-
     public String getTimeProperty() {
         return timeProperty.get();
     }
-
     public SimpleStringProperty timePropertyProperty() {
         return timeProperty;
     }
