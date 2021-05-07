@@ -127,10 +127,10 @@ public class Producer implements Runnable {
         LocalDateTime timeInitialized = LocalDateTime.now();
         LocalDateTime timeEnd = timeInitialized.plusSeconds(seconds);
         while (true){
-            this.timeProperty.setValue(Long.toString(this.timeRemaining.getSeconds()));
-            this.progress.set(1 - (double)timeRemaining.toSeconds()/(double)currentInterval.toSeconds());
+            this.timeProperty.setValue(Long.toString(this.timeRemaining.toMillis()));
+            this.progress.set(1 - (double)timeRemaining.toMillis()/(double)currentInterval.toMillis());
             try {
-                Thread.sleep(1000);
+                Thread.sleep(10);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

@@ -208,31 +208,20 @@ public class GameController {
      */
     @FXML
     public void producerBuyHandler(Event event) {
+        //Gets the id from the node which called the event
+        String nodeID = ((Node) event.getSource()).getId();
+        System.out.println(nodeID);
+        int producerNumber = Integer.parseInt(nodeID.substring(1, 2));
 
         if(theModel.buyMode == ONE) {
-            //Gets the id from the node which called the event
-            String nodeID = ((Node) event.getSource()).getId();
-            System.out.println(nodeID);
-            int producerNumber = Integer.parseInt(nodeID.substring(1, 2));
-
             this.theModel.getProducers().get(producerNumber - 1).buy();
 
         }else if(theModel.buyMode == TEN){
             for(int i=0; i<10; i++){
-                //Gets the id from the node which called the event
-                String nodeID = ((Node) event.getSource()).getId();
-                System.out.println(nodeID);
-                int producerNumber = Integer.parseInt(nodeID.substring(1, 2));
-
                 this.theModel.getProducers().get(producerNumber - 1).buy();
             }
         }else if(theModel.buyMode == ONEHUNDRED){
             for(int i=0; i<100; i++){
-                //Gets the id from the node which called the event
-                String nodeID = ((Node) event.getSource()).getId();
-                System.out.println(nodeID);
-                int producerNumber = Integer.parseInt(nodeID.substring(1, 2));
-
                 this.theModel.getProducers().get(producerNumber - 1).buy();
             }
         } //TODO - fill in max buy
@@ -240,13 +229,12 @@ public class GameController {
             //get the number of producers the user can purchase
             int maxNum = theModel.calcMaxBuy();
             for(int i=0; i<maxNum; i++){
-                //Gets the id from the node which called the event
-                String nodeID = ((Node) event.getSource()).getId();
-                System.out.println(nodeID);
-                int producerNumber = Integer.parseInt(nodeID.substring(1, 2));
 
                 this.theModel.getProducers().get(producerNumber - 1).buy();
             }
+        }
+        else{
+            this.theModel.getProducers().get(producerNumber - 1).buy();
         }
 
 
