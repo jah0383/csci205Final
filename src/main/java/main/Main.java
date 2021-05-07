@@ -1,10 +1,14 @@
 package main;
 
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+
+import java.net.URL;
 
 public class Main extends Application {
 
@@ -12,29 +16,43 @@ public class Main extends Application {
     private GameView theView;
     private GameController theController;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         launch(args);
     }
 
     @Override
     public void init() throws Exception{
         super.init();
-        this.theModel = new GameModel();
-        this.theView = new GameView(theModel);
+        theModel = new GameModel();
+        theView = new GameView(theModel);
+
 
     }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        theController = new GameController(theModel,theView);
-        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("GuiV1.fxml"));
+
+
+
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/GuiV1.fxml"));
+        Parent root = loader.load();
+
+        theController = new GameController();
+        theController.setupController(theModel,theView);
+//        theController.initialize();
+
+
+
+
         primaryStage.setTitle("Covid Clicker");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
 
     }
 
-//    public void test(){
-//        System.out.println("hey");
+//    public static void test() throws InterruptedException {
+//        Producer newCell = new Producer();
+//        newCell.run(5);
 //    }
 }
