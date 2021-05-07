@@ -35,6 +35,11 @@ public class GameModel {
      */
     public ArrayList<Producer> producers;
 
+    /**
+     * The current buy mode of the game (1x/10x/100x/MAX)
+     */
+    public BuyMode buyMode;
+
 
     public GameModel(){
         this.producers = new ArrayList<>();
@@ -47,8 +52,9 @@ public class GameModel {
     }
 
 
+    //TODO - method that calculate the maximum amount of a producer the user can buy
+    public int calcMaxBuy(){
+        return 1;
 
-
-
-
+    }
 }

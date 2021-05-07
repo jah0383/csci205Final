@@ -13,6 +13,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
+import static main.BuyMode.*;
+
 public class GameController {
 
     // view and model loaded in
@@ -206,16 +208,71 @@ public class GameController {
      */
     @FXML
     public void producerBuyHandler(Event event) {
-        //Gets the id from the node which called the event
-        String nodeID = ((Node) event.getSource()).getId();
-        System.out.println(nodeID);
-        int producerNumber = Integer.parseInt(nodeID.substring(1,2));
 
-        this.theModel.getProducers().get(producerNumber - 1).buy();
+        if(theModel.buyMode == ONE) {
+            //Gets the id from the node which called the event
+            String nodeID = ((Node) event.getSource()).getId();
+            System.out.println(nodeID);
+            int producerNumber = Integer.parseInt(nodeID.substring(1, 2));
+
+            this.theModel.getProducers().get(producerNumber - 1).buy();
+
+        }else if(theModel.buyMode == TEN){
+            for(int i=0; i<10; i++){
+                //Gets the id from the node which called the event
+                String nodeID = ((Node) event.getSource()).getId();
+                System.out.println(nodeID);
+                int producerNumber = Integer.parseInt(nodeID.substring(1, 2));
+
+                this.theModel.getProducers().get(producerNumber - 1).buy();
+            }
+        }else if(theModel.buyMode == ONEHUNDRED){
+            for(int i=0; i<100; i++){
+                //Gets the id from the node which called the event
+                String nodeID = ((Node) event.getSource()).getId();
+                System.out.println(nodeID);
+                int producerNumber = Integer.parseInt(nodeID.substring(1, 2));
+
+                this.theModel.getProducers().get(producerNumber - 1).buy();
+            }
+        } //TODO - fill in max buy
+        else if(theModel.buyMode == MAX){
+            //get the number of producers the user can purchase
+            int maxNum = theModel.calcMaxBuy();
+            for(int i=0; i<maxNum; i++){
+                //Gets the id from the node which called the event
+                String nodeID = ((Node) event.getSource()).getId();
+                System.out.println(nodeID);
+                int producerNumber = Integer.parseInt(nodeID.substring(1, 2));
+
+                this.theModel.getProducers().get(producerNumber - 1).buy();
+            }
+        }
+
 
         //Testing
         System.out.println(this.theModel.getProducers().get(producerNumber - 1).getDisplayCostForNext());
 
 
+    }
+
+    @FXML
+    public void changeBuyModeto1x(){
+        theModel.buyMode = ONE;
+    }
+
+    @FXML
+    public void changeBuyModeto10x(){
+        theModel.buyMode = TEN;
+    }
+
+    @FXML
+    public void changeBuyModeto100x(){
+        theModel.buyMode = ONEHUNDRED;
+    }
+
+    @FXML
+    public void changeBuyModetoMAX(){
+        theModel.buyMode = MAX;
     }
 }
