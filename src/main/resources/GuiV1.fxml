@@ -87,7 +87,7 @@
                      <children>
                         <HBox prefHeight="49.0" prefWidth="248.0">
                            <children>
-                              <Button fx:id="P1_btn" mnemonicParsing="false" onAction="#test" prefHeight="49.0" prefWidth="150.0" text="Test" />
+                              <Button fx:id="P1_btn" mnemonicParsing="false" onAction="#producerBuyHandler" prefHeight="49.0" prefWidth="150.0" text="Test" />
                               <VBox prefHeight="49.0" prefWidth="131.0">
                                  <children>
                                     <Label prefHeight="59.0" prefWidth="124.0" text="Gain/Click" />

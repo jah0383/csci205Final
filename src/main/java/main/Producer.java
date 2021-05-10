@@ -40,26 +40,32 @@ public class Producer implements Runnable {
     private SimpleStringProperty displayCostForNext;
     private Duration currentInterval;
     private Duration timeRemaining;
-
     private SimpleLongProperty totalGain;
-
     private SimpleDoubleProperty progress;
-
-
-
     private SimpleStringProperty timeProperty; //TODO change this to string, add an update/format for it
-
-
-
-
-
-
-
-
     private SimpleStringProperty displayTotalGain;
+
+    public int getNumberPurchased() {
+        return numberPurchased;
+    }
+
     private int numberPurchased;
     private double gainMult;
     private double periodMult;
+
+    public long getMostRecentGain() {
+        return mostRecentGain.get();
+    }
+
+    public SimpleLongProperty mostRecentGainProperty() {
+        return mostRecentGain;
+    }
+
+    public void setMostRecentGain(long mostRecentGain) {
+        this.mostRecentGain.set(mostRecentGain);
+    }
+
+    private SimpleLongProperty mostRecentGain;
 
     //TODO JAVA DOC
     public Producer(String name,
@@ -79,20 +85,21 @@ public class Producer implements Runnable {
         this.totalGain = new SimpleLongProperty(0);
         this.numberPurchased = 0;
         this.gainMult = 1;
-        this.periodMult = 1;
+        this.periodMult = .5;
 
 
 
-        this.displayCostForNext = new SimpleStringProperty(this.costForNext.toString());
+        this.displayCostForNext = new SimpleStringProperty(this.costForNext.getValue().toString());
         this.displayCostForNext.bind(this.costForNext.asString());
 
 
 
-        this.displayTotalGain = new SimpleStringProperty(this.totalGain.toString());
+        this.displayTotalGain = new SimpleStringProperty(this.totalGain.getValue().toString());
         this.displayTotalGain.bind(this.totalGain.asString());
 
 
         this.progress = new SimpleDoubleProperty(0.0);
+        this.mostRecentGain = new SimpleLongProperty(0);
 
     }
 
@@ -113,9 +120,31 @@ public class Producer implements Runnable {
 
 
     //TODO JAVA DOC
-    public void buy() {
-        this.costForNext.set(this.costForNext.get() + 1);
-        this.totalGain.set(this.totalGain.get() + 1);
+    public long buy(Long DNA) {
+
+        //Check for enough DNA
+        if(DNA < this.costForNext.get()){
+            return -1;
+        }
+
+        //If its the first one then it starts the thread
+
+//        if(this.numberPurchased == 0){
+//            this.run();
+//        }
+        //Update stuff
+        long cost = this.costForNext.get();
+        this.costForNext.set((long)(this.costForNext.get() * this.costMult));
+
+        this.totalGain.set((this.totalGain.get() + this.initialGain));
+
+        this.numberPurchased += 1;
+
+        if(this.numberPurchased == 5 || this.numberPurchased == 10 || (this.numberPurchased % 25) == 0){
+            this.currentInterval = Duration.ofMillis((long)(this.currentInterval.toMillis() * periodMult));
+        }
+        System.out.println(this.currentInterval.toMillis());
+        return cost;
 
     }
 
@@ -134,15 +163,16 @@ public class Producer implements Runnable {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            System.out.print("Time remaining: "+ timeRemaining + " seconds.");
+//            System.out.print("Time remaining: "+ timeRemaining + " seconds.");
             LocalDateTime timeNow = LocalDateTime.now();
-            System.out.println(" It is now: " + timeNow);
+//            System.out.println(" It is now: " + timeNow);
             timeRemaining = Duration.between(timeNow, timeEnd);
             if (timeRemaining.isNegative()){
-                timeRemaining = Duration.ofSeconds(seconds);
+                timeRemaining = Duration.ofMillis(currentInterval.toMillis());
                 timeNow = LocalDateTime.now();
-                timeEnd = timeNow.plusSeconds(seconds);
-                getGain(timeRemaining);
+                timeEnd = timeNow.plusNanos(currentInterval.toNanos());
+                this.mostRecentGain.set(this.totalGain.get());
+                this.mostRecentGain.set(0);
             }
         }
     }
@@ -181,4 +211,7 @@ public class Producer implements Runnable {
     }
 
 
+    public long getInitialGain() {
+        return initialGain;
+    }
 }
