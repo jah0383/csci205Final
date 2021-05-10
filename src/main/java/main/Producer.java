@@ -19,6 +19,7 @@
  */
 package main;
 
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -43,15 +44,10 @@ public class Producer implements Runnable {
 
     private SimpleLongProperty totalGain;
     private SimpleDoubleProperty progress;
-    private SimpleStringProperty timeProperty; //TODO change this to string, add an update/format for it
+    private SimpleStringProperty timeProperty;
     private SimpleDoubleProperty dnaProduced;
     private SimpleStringProperty displayDnaProduced;
-
-
-
-
-
-
+    private boolean firstBuy;
 
     private SimpleStringProperty displayTotalGain;
     private int numberPurchased;
@@ -90,6 +86,8 @@ public class Producer implements Runnable {
 
         this.progress = new SimpleDoubleProperty(0.0);
 
+        this.firstBuy = false;
+
     }
 
     /**
@@ -123,16 +121,14 @@ public class Producer implements Runnable {
         LocalDateTime timeInitialized = LocalDateTime.now();
         LocalDateTime timeEnd = timeInitialized.plusSeconds(seconds);
         while (true){
-            this.timeProperty.setValue(Long.toString(this.timeRemaining.getSeconds()));
-            this.progress.set(1 - (double)timeRemaining.toSeconds()/(double)currentInterval.toSeconds());
+            this.timeProperty.setValue(Long.toString(this.timeRemaining.toSeconds()));
+            this.progress.set(1 - (double)timeRemaining.toMillis()/(double)currentInterval.toMillis());
             try {
-                Thread.sleep(1000);
+                Thread.sleep(10);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            System.out.print("Time remaining: "+ timeRemaining + " seconds.");
             LocalDateTime timeNow = LocalDateTime.now();
-            System.out.println(" It is now: " + timeNow);
             timeRemaining = Duration.between(timeNow, timeEnd);
             if (timeRemaining.isNegative()){
                 timeRemaining = Duration.ofSeconds(seconds);
@@ -140,7 +136,6 @@ public class Producer implements Runnable {
                 timeEnd = timeNow.plusSeconds(seconds);
                 getGain(timeRemaining);
                 dnaProduced.set(5 + dnaProduced.getValue());
-                System.out.println(dnaProduced);
             }
         }
     }
@@ -172,6 +167,7 @@ public class Producer implements Runnable {
     public SimpleStringProperty timePropertyProperty() {
         return timeProperty;
     }
-
+    public boolean getFirstBuy() { return firstBuy; }
+    public void setFirstBuy(){firstBuy = true;}
 
 }

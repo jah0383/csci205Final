@@ -111,10 +111,6 @@ public class GameController {
     public void setupController(GameModel theModel, GameView theView){
         this.theModel = theModel;
         this.theView = theView;
-//        System.out.println(P2_time);
-//        P2_time = new Label();
-//        System.out.println(this.theModel.producers.get(1).timePropertyProperty());
-//        System.out.println(P2_time.textProperty().toString());
     }
 
     @FXML
@@ -190,10 +186,10 @@ public class GameController {
 
     @FXML
     public void test(ActionEvent actionEvent) throws InterruptedException {
-//        System.out.println("test");
-//        System.out.println(this.theModel.producers.get(1).timePropertyProperty());
-        new Thread(this.theModel.producers.get(1)).start();
-        //this.theModel.producers.get(1).run(5);
+        if (!this.theModel.producers.get(1).getFirstBuy()) {
+            this.theModel.producers.get(1).setFirstBuy();
+            new Thread(this.theModel.producers.get(1)).start();
+        }
 
     }
 
