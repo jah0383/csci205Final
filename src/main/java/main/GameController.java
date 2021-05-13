@@ -16,6 +16,8 @@ import javafx.util.Duration;
 
 import java.nio.file.Paths;
 
+import static main.BuyMode.*;
+
 public class GameController {
 
     // view and model loaded in
@@ -96,7 +98,6 @@ public class GameController {
 
     /**
      * Constructor for the game controller
-     *
      */
     public GameController() {
         this.theModel = new GameModel();
@@ -109,7 +110,7 @@ public class GameController {
      * @param theView  is the view of the game, i.e. the scene
      * @param theModel is the model of the game, i.e. the info about all cells currently in the game
      */
-    public void setupController(GameModel theModel, GameView theView){
+    public void setupController(GameModel theModel, GameView theView) {
         this.theModel = theModel;
         this.theView = theView;
 //        System.out.println(P2_time);
@@ -125,23 +126,26 @@ public class GameController {
 
 
         linkAndBindProducers();
+        ChangeListener<Number> DNAListener = (obs, oldStatus, newStatus) -> Platform.runLater(() -> dna_label1.setText(newStatus.toString()));
+        this.theModel.totalDNAProperty().addListener(DNAListener);
 
 
     }
 
     /**
      * This method links everything in the scene to everything that's in the model
+     *
      * @author James Howe
      */
     private void linkAndBindProducers() {
-        for(int i = 1; i<this.theModel.getProducers().size(); i++){
+        for (int i = 1; i < this.theModel.getProducers().size(); i++) {
             VBox producerVBox = (VBox) producer_pane.getChildren().get(i);
 
             VBox displayVBox = (VBox) ((HBox) producerVBox.getChildren().get(0)).getChildren().get(1);
 
-            Label costLabel = (Label) ((HBox)displayVBox.getChildren().get(0)).getChildren().get(1);
-            Label gainLabel = (Label) ((HBox)displayVBox.getChildren().get(1)).getChildren().get(1);
-            Label timeLabel = (Label) ((HBox)displayVBox.getChildren().get(2)).getChildren().get(1);
+            Label costLabel = (Label) ((HBox) displayVBox.getChildren().get(0)).getChildren().get(1);
+            Label gainLabel = (Label) ((HBox) displayVBox.getChildren().get(1)).getChildren().get(1);
+            Label timeLabel = (Label) ((HBox) displayVBox.getChildren().get(2)).getChildren().get(1);
 
             ProgressBar progressBar = (ProgressBar) producerVBox.getChildren().get(1);
 
@@ -155,6 +159,9 @@ public class GameController {
 
             ChangeListener<Number> progressListener = (obs, oldValue, newValue) -> Platform.runLater(() -> progressBar.setProgress(newValue.doubleValue()));
             this.theModel.producers.get(i).progressProperty().addListener(progressListener);
+
+            ChangeListener<Number> mostRecentGainListener = (obs, oldStatus, newStatus) -> Platform.runLater(() -> this.theModel.setTotalDNA(this.theModel.getTotalDNA() + (long) newStatus));
+            this.theModel.producers.get(i).mostRecentGainProperty().addListener(mostRecentGainListener);
         }
     }
 
@@ -196,14 +203,15 @@ public class GameController {
     @FXML
     public void test(ActionEvent actionEvent) throws InterruptedException {
 //        System.out.println("test");
-//        System.out.println(this.theModel.producers.get(1).timePropertyProperty());
-        new Thread(this.theModel.producers.get(1)).start();
+////        System.out.println(this.theModel.producers.get(1).timePropertyProperty());
+//        new Thread(this.theModel.producers.get(1)).start();
         //this.theModel.producers.get(1).run(5);
 
     }
 
     /**
      * This method is called whenever a producer button is pressed and handles the buying of producers
+     *
      * @param event is passed in automatically
      * @author James Howe
      */
@@ -212,14 +220,75 @@ public class GameController {
         //Gets the id from the node which called the event
         String nodeID = ((Node) event.getSource()).getId();
         System.out.println(nodeID);
-        int producerNumber = Integer.parseInt(nodeID.substring(1,2));
+        int producerNumber = Integer.parseInt(nodeID.substring(1, 2));
 
-        this.theModel.getProducers().get(producerNumber - 1).buy();
+        if (producerNumber == 1) {
+            theModel.setTotalDNA(theModel.getTotalDNA() + this.theModel.getProducers().get(producerNumber - 1).getInitialGain());
+        } else {
 
-        //Testing
-        System.out.println(this.theModel.getProducers().get(producerNumber - 1).getDisplayCostForNext());
+            if (theModel.buyMode == ONE) {
+                long cost = this.theModel.getProducers().get(producerNumber - 1).buy(theModel.getTotalDNA());
+                System.out.println(this.theModel.getProducers().get(producerNumber - 1).getNumberPurchased());
+                if (cost != -1 && this.theModel.getProducers().get(producerNumber - 1).getNumberPurchased() == 1) {
+                    new Thread(this.theModel.producers.get(producerNumber - 1)).start();
+                }
+                if (cost != -1) {
+                    theModel.setTotalDNA(theModel.getTotalDNA() - cost);
+                }
+            } else if (theModel.buyMode == TEN) {
+                for (int i = 0; i < 10; i++) {
+                    long cost = this.theModel.getProducers().get(producerNumber - 1).buy(theModel.getTotalDNA());
+                    if (cost == -1) {
+                        break;
+                    } else {
+                        theModel.setTotalDNA(theModel.getTotalDNA() - cost);
+                    }
+                }
+            } else if (theModel.buyMode == ONEHUNDRED) {
+                for (int i = 0; i < 100; i++) {
+                    long cost = this.theModel.getProducers().get(producerNumber - 1).buy(theModel.getTotalDNA());
+                    if (cost == -1) {
+                        break;
+                    } else {
+                        theModel.setTotalDNA(theModel.getTotalDNA() - cost);
+                    }
+                }
+            } //TODO - fill in max buy
+            else if (theModel.buyMode == MAX) {
+                //get the number of producers the user can purchase
+                int maxNum = theModel.calcMaxBuy();
+                while (true) {
+                    long cost = this.theModel.getProducers().get(producerNumber - 1).buy(theModel.getTotalDNA());
+                    if (cost == -1) {
+                        break;
+                    } else {
+                        theModel.setTotalDNA(theModel.getTotalDNA() - cost);
+                    }
+                }
+            }
+
+        }
+    }
 
 
+    @FXML
+    public void changeBuyModeto1x() {
+        theModel.buyMode = ONE;
+    }
+
+    @FXML
+    public void changeBuyModeto10x() {
+        theModel.buyMode = TEN;
+    }
+
+    @FXML
+    public void changeBuyModeto100x() {
+        theModel.buyMode = ONEHUNDRED;
+    }
+
+    @FXML
+    public void changeBuyModetoMAX() {
+        theModel.buyMode = MAX;
     }
 
     MediaPlayer mediaPlayer;
