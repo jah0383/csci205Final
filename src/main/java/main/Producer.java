@@ -112,6 +112,9 @@ public class Producer implements Runnable {
     }
 
 
+    /**
+     * increases the costForNext and totalGain upon buying a producer
+     */
     //TODO JAVA DOC
     public void buy() {
         this.costForNext.set(this.costForNext.get() + 1);
@@ -120,6 +123,9 @@ public class Producer implements Runnable {
     }
 
 
+    /**
+     *
+     */
     @Override
     public void run() {
         long seconds = currentInterval.toSeconds();

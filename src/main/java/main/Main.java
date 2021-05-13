@@ -1,14 +1,10 @@
 package main;
 
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-
-import java.net.URL;
 
 public class Main extends Application {
 
@@ -16,10 +12,19 @@ public class Main extends Application {
     private GameView theView;
     private GameController theController;
 
+    /**
+     * main method
+     * @param args
+     * @throws InterruptedException
+     */
     public static void main(String[] args) throws InterruptedException {
         launch(args);
     }
 
+    /**
+     * initializes the program
+     * @throws Exception
+     */
     @Override
     public void init() throws Exception{
         super.init();
@@ -29,6 +34,11 @@ public class Main extends Application {
 
     }
 
+    /**
+     * starts the program
+     * @param primaryStage
+     * @throws Exception
+     */
     @Override
     public void start(Stage primaryStage) throws Exception {
 
@@ -48,8 +58,10 @@ public class Main extends Application {
         primaryStage.setTitle("Covid Clicker");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
+        theController.musicStart();
 
     }
+
 
 //    public static void test() throws InterruptedException {
 //        Producer newCell = new Producer();

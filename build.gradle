@@ -25,7 +25,8 @@ test {
 // Needs to be either 11.0.2 or 14.0.2
 javafx {
     version = "14.0.2"
-    modules = [ 'javafx.controls', 'javafx.fxml' ]
+    modules = [ 'javafx.controls', 'javafx.fxml', 'javafx.media' ]
+
 }
 
 dependencies {

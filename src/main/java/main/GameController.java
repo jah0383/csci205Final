@@ -1,10 +1,8 @@
 package main;
 
 import javafx.application.Platform;
-import javafx.beans.binding.Bindings;
 import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
-
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -12,6 +10,11 @@ import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.util.Duration;
+
+import java.nio.file.Paths;
 
 public class GameController {
 
@@ -218,4 +221,36 @@ public class GameController {
 
 
     }
+
+    MediaPlayer mediaPlayer;
+    /**
+     * initializes the music at the start of the game
+     */
+    public void musicStart(){
+        String fileName = "Never Gonna Give You Up (8 Bit Remix Cover Version) [Tribute to Rick Astley] - 8 Bit Universe.mp3";
+        Media sound = new Media(Paths.get(fileName).toUri().toString());
+        mediaPlayer = new MediaPlayer(sound);
+        mediaPlayer.setOnEndOfMedia(new Runnable() {
+            @Override
+            public void run() {
+                mediaPlayer.seek(Duration.ZERO);
+            }
+        });
+        mediaPlayer.play();
+    }
+
+    /**
+     * mutes the music
+     */
+    public void musicMute(){
+        mediaPlayer.setVolume(0.0);
+    }
+
+    /**
+     * Un-mutes the music
+     */
+    public void musicUnMute(){
+        mediaPlayer.setVolume(100.0);
+    }
+
 }
