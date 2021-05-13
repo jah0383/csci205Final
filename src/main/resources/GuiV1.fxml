@@ -309,7 +309,7 @@
                           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                  <children>
                                     <ImageView fitHeight="259.0" fitWidth="248.0" pickOnBounds="true" preserveRatio="true" />
-                                    <ToggleButton layoutX="199.0" layoutY="235.0" mnemonicParsing="false" text="Mute" onAction="#musicMute"  />
+                                    <ToggleButton layoutX="199.0" layoutY="235.0" mnemonicParsing="false" text="Mute" onAction="#muteButton"  />
                                  </children></AnchorPane>
                         </content>
                       </Tab>

@@ -12,7 +12,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-import javafx.util.Duration;
 
 import java.nio.file.Paths;
 
@@ -291,21 +290,33 @@ public class GameController {
         theModel.buyMode = MAX;
     }
 
+    @FXML
+    public void muteButton(){
+        if (!theModel.muted){
+            musicMute();
+        }else if(theModel.muted){
+            musicUnMute();
+        }
+    }
+
     MediaPlayer mediaPlayer;
     /**
      * initializes the music at the start of the game
      */
     public void musicStart(){
-        String fileName = "Never Gonna Give You Up (8 Bit Remix Cover Version) [Tribute to Rick Astley] - 8 Bit Universe.mp3";
+        String fileName = "resources/Never Gonna Give You Up (8 Bit Remix Cover Version) [Tribute to Rick Astley] - 8 Bit Universe.mp3";
         Media sound = new Media(Paths.get(fileName).toUri().toString());
         mediaPlayer = new MediaPlayer(sound);
-        mediaPlayer.setOnEndOfMedia(new Runnable() {
+        mediaPlayer.setCycleCount(999999999);
+        mediaPlayer.setAutoPlay(true);
+
+        /*mediaPlayer.setOnEndOfMedia(new Runnable() {
             @Override
             public void run() {
                 mediaPlayer.seek(Duration.ZERO);
             }
         });
-        mediaPlayer.play();
+        mediaPlayer.play();*/
     }
 
     /**
@@ -319,7 +330,6 @@ public class GameController {
      * Un-mutes the music
      */
     public void musicUnMute(){
-        mediaPlayer.setVolume(100.0);
+        mediaPlayer.setVolume(1.0);
     }
-
 }
