@@ -88,7 +88,7 @@ public class Producer implements Runnable {
         this.initialGain = initialGain;
         this.initialPeriod = initialPeriod;
         this.costMult = costMult;
-        this.costForNext = new SimpleLongProperty(this.initialCost);
+        this.costForNext = new SimpleLongProperty(0);
         this.currentInterval = Duration.ofSeconds(initialPeriod);
         this.timeRemaining = this.currentInterval;
         this.timeProperty = new SimpleStringProperty(Double.toString(initialPeriod));
@@ -98,29 +98,50 @@ public class Producer implements Runnable {
         this.periodMult = .5;
 
 
-
         this.displayCostForNext = new SimpleStringProperty(this.costForNext.getValue().toString());
         this.displayCostForNext.bind(this.costForNext.asString());
 
-
-
         this.displayTotalGain = new SimpleStringProperty(this.totalGain.getValue().toString());
         this.displayTotalGain.bind(this.totalGain.asString());
+
+        this.displayNumberPurchased = new SimpleStringProperty((this.numberPurchased.getValue().toString()));
+        this.displayNumberPurchased.bind(this.numberPurchased.asString());
 
 
         this.progress = new SimpleDoubleProperty(0.0);
         this.mostRecentGain = new SimpleLongProperty(0);
 
-        this.displayNumberPurchased = new SimpleStringProperty((this.numberPurchased.getValue().toString()));
-        this.displayNumberPurchased.bind(this.numberPurchased.asString());
 
+
+    }
+
+    public void setInitialDisplay() {
+
+
+        this.costForNext.set(0);
+        this.costForNext.set(this.initialCost);
+
+
+
+
+        this.totalGain.set(0);
+        this.totalGain.set(this.initialGain);
+
+
+
+
+
+        this.timeProperty.set(Long.toString(this.currentInterval.toMillis()));
     }
 
     /**
      * method to update the values of producer
      */
-    public void update()
-    {}
+    public void update(){
+//        this.costForNext.set(this.costForNext);
+//        this.totalGain.set(this.totalGain.get());
+//        this.progress.set(this.progress.get());
+    }
 
     /**
      * getter for the gain of the producer
@@ -140,11 +161,11 @@ public class Producer implements Runnable {
             return -1;
         }
 
-        //If its the first one then it starts the thread
+        //If its the first one then it Doesn't update the gain
 
-//        if(this.numberPurchased == 0){
-//            this.run();
-//        }
+        if(this.numberPurchased.get() == 0){
+            this.totalGain.set((this.totalGain.get() - this.initialGain));
+        }
         //Update stuff
         long cost = this.costForNext.get();
         this.costForNext.set((long)(this.costForNext.get() * this.costMult));

@@ -1,10 +1,8 @@
 package main;
 
 import javafx.application.Platform;
-import javafx.beans.binding.Bindings;
 import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
-
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -158,11 +156,14 @@ public class GameController {
             this.theModel.producers.get(i).displayNumberPurchasedProperty().addListener(amountListener);
             this.theModel.producers.get(i).timePropertyProperty().addListener(timeListener);
 
+
             ChangeListener<Number> progressListener = (obs, oldValue, newValue) -> Platform.runLater(() -> progressBar.setProgress(newValue.doubleValue()));
             this.theModel.producers.get(i).progressProperty().addListener(progressListener);
 
             ChangeListener<Number> mostRecentGainListener = (obs, oldStatus, newStatus) -> Platform.runLater(() -> this.theModel.setTotalDNA(this.theModel.getTotalDNA() + (long) newStatus));
             this.theModel.producers.get(i).mostRecentGainProperty().addListener(mostRecentGainListener);
+
+            this.theModel.producers.get(i).setInitialDisplay();
         }
     }
 
@@ -225,50 +226,61 @@ public class GameController {
 
         if (producerNumber == 1) {
             theModel.setTotalDNA(theModel.getTotalDNA() + this.theModel.getProducers().get(producerNumber - 1).getInitialGain());
-        } else {
-
-            if (theModel.buyMode == ONE) {
-                long cost = this.theModel.getProducers().get(producerNumber - 1).buy(theModel.getTotalDNA());
-                System.out.println(this.theModel.getProducers().get(producerNumber - 1).getNumberPurchased());
-                if (cost != -1 && this.theModel.getProducers().get(producerNumber - 1).getNumberPurchased() == 1) {
-                    new Thread(this.theModel.producers.get(producerNumber - 1)).start();
-                }
-                if (cost != -1) {
-                    theModel.setTotalDNA(theModel.getTotalDNA() - cost);
-                }
-            } else if (theModel.buyMode == TEN) {
-                for (int i = 0; i < 10; i++) {
-                    long cost = this.theModel.getProducers().get(producerNumber - 1).buy(theModel.getTotalDNA());
-                    if (cost == -1) {
-                        break;
-                    } else {
-                        theModel.setTotalDNA(theModel.getTotalDNA() - cost);
-                    }
-                }
-            } else if (theModel.buyMode == ONEHUNDRED) {
-                for (int i = 0; i < 100; i++) {
-                    long cost = this.theModel.getProducers().get(producerNumber - 1).buy(theModel.getTotalDNA());
-                    if (cost == -1) {
-                        break;
-                    } else {
-                        theModel.setTotalDNA(theModel.getTotalDNA() - cost);
-                    }
-                }
-            } //TODO - fill in max buy
-            else if (theModel.buyMode == MAX) {
-                //get the number of producers the user can purchase
-                int maxNum = theModel.calcMaxBuy();
-                while (true) {
-                    long cost = this.theModel.getProducers().get(producerNumber - 1).buy(theModel.getTotalDNA());
-                    if (cost == -1) {
-                        break;
-                    } else {
-                        theModel.setTotalDNA(theModel.getTotalDNA() - cost);
-                    }
-                }
-            }
-
         }
+        else {
+            Producer producer = this.theModel.getProducers().get(producerNumber - 1);
+            long cost;
+            switch(theModel.buyMode){
+                case ONE:
+                    buyProducer(producer);
+                    break;
+                case TEN:
+                    for (int i = 0; i < 10; i++) {
+                        cost = buyProducer(producer);
+                        if (cost == -1) {
+                            break;
+                        }
+                    }
+                    break;
+                case ONEHUNDRED:
+                    for (int i = 0; i < 100; i++) {
+                        cost = buyProducer(producer);
+                        if (cost == -1) {
+                            break;
+                        }
+                    }
+                    break;
+                case MAX:
+                    while (true) {
+                        cost = buyProducer(producer);
+                        if (cost == -1) {
+                            break;
+                        }
+                    }
+                    break;
+                default:
+                    buyProducer(producer);
+                    break;
+            }
+        }
+    }
+
+
+    /**
+     * Handles the buying of the producer,
+     * @param producer The producer you'd like to buy
+     * @return the Cost of the producer, more importantly a -1 if it couldn't be afforded
+     */
+    private long buyProducer(Producer producer) {
+        long cost = producer.buy(theModel.getTotalDNA());
+        System.out.println(producer.getNumberPurchased());
+        if (cost != -1 && producer.getNumberPurchased() == 1) {
+            new Thread(producer).start();
+        }
+        if (cost != -1) {
+            theModel.setTotalDNA(theModel.getTotalDNA() - cost);
+        }
+        return cost;
     }
 
 
