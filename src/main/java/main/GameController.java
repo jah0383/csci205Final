@@ -142,16 +142,20 @@ public class GameController {
 
             Label costLabel = (Label) ((HBox) displayVBox.getChildren().get(0)).getChildren().get(1);
             Label gainLabel = (Label) ((HBox) displayVBox.getChildren().get(1)).getChildren().get(1);
-            Label timeLabel = (Label) ((HBox) displayVBox.getChildren().get(2)).getChildren().get(1);
+            Label amountLabel = (Label) ((HBox) displayVBox.getChildren().get(2)).getChildren().get(1);
 
-            ProgressBar progressBar = (ProgressBar) producerVBox.getChildren().get(1);
+            HBox timeBox = (HBox) producerVBox.getChildren().get(1);
+            ProgressBar progressBar = (ProgressBar) timeBox.getChildren().get(0);
+            Label timeLabel = (Label) ((HBox) timeBox.getChildren().get(1)).getChildren().get(1);
 
 
             ChangeListener<String> costListener = (obs, oldStatus, newStatus) -> Platform.runLater(() -> costLabel.setText(newStatus));
             ChangeListener<String> gainListener = (obs, oldStatus, newStatus) -> Platform.runLater(() -> gainLabel.setText(newStatus));
+            ChangeListener<String> amountListener = (obs, oldValue, newValue) -> Platform.runLater(() -> amountLabel.textProperty().set(newValue));
             ChangeListener<String> timeListener = (obs, oldValue, newValue) -> Platform.runLater(() -> timeLabel.textProperty().set(newValue));
             this.theModel.producers.get(i).displayCostForNextProperty().addListener(costListener);
             this.theModel.producers.get(i).displayTotalGainProperty().addListener(gainListener);
+            this.theModel.producers.get(i).displayNumberPurchasedProperty().addListener(amountListener);
             this.theModel.producers.get(i).timePropertyProperty().addListener(timeListener);
 
             ChangeListener<Number> progressListener = (obs, oldValue, newValue) -> Platform.runLater(() -> progressBar.setProgress(newValue.doubleValue()));

@@ -50,12 +50,12 @@ public class GameModel {
         this.totalGain = 0;
         this.buyMode = BuyMode.ONE;
         this.producers = new ArrayList<>();
-        this.producers.add(new Producer("P1",0,1000,1,1.01));
-        this.producers.add(new Producer("P2",50,1,10,1.1));
-        this.producers.add(new Producer("P3",50,1,10,1.1));
-        this.producers.add(new Producer("P4",50,1,10,1.1));
-        this.producers.add(new Producer("P5",50,1,10,1.1));
-        this.producers.add(new Producer("P6",50,1,10,1.1));
+        this.producers.add(new Producer("P1",0,10,1,1));
+        this.producers.add(new Producer("P2",500,10,1,1.01));
+        this.producers.add(new Producer("P3",5000,1000,2,1.1));
+        this.producers.add(new Producer("P4",50000,100000,4,1.1));
+        this.producers.add(new Producer("P5",500000,10000000,8,1.1));
+        this.producers.add(new Producer("P6",5000000,1000000000,16,1.1));
     }
 
 
