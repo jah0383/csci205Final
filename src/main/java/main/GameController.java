@@ -354,8 +354,7 @@ public class GameController {
 
     /**
      * Initializes the music at the start of the game
-     * @author Joseph
-     *
+     * @author Joseph and James Howe
      */
     public void musicStart() throws FileNotFoundException {
         URL musicUrl = getClass().getClassLoader().getResource("GameMusic.mp3");
