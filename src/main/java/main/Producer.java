@@ -46,11 +46,21 @@ public class Producer implements Runnable {
     private SimpleStringProperty timeProperty; //TODO change this to string, add an update/format for it
     private SimpleStringProperty displayTotalGain;
 
-    public int getNumberPurchased() {
+    public long getNumberPurchased() {
+        return numberPurchased.get();
+    }
+
+    public SimpleLongProperty numberPurchasedProperty() {
         return numberPurchased;
     }
 
-    private int numberPurchased;
+    public void setNumberPurchased(long numberPurchased) {
+        this.numberPurchased.set(numberPurchased);
+    }
+
+    private SimpleLongProperty numberPurchased;
+    private SimpleStringProperty displayNumberPurchased;
+
     private double gainMult;
     private double periodMult;
 
@@ -95,7 +105,7 @@ public class Producer implements Runnable {
         this.timeRemaining = this.currentInterval;
         this.timeProperty = new SimpleStringProperty(Double.toString(initialPeriod));
         this.totalGain = new SimpleLongProperty(0);
-        this.numberPurchased = 0;
+        this.numberPurchased = new SimpleLongProperty(0);
         this.gainMult = 1;
         this.periodMult = .5;
 
@@ -111,6 +121,9 @@ public class Producer implements Runnable {
         this.displayTotalGain = new SimpleStringProperty(this.totalGain.getValue().toString());
         this.displayTotalGain.bind(this.totalGain.asString());
 
+        this.displayNumberPurchased = new SimpleStringProperty((this.numberPurchased.getValue().toString()));
+        this.displayNumberPurchased.bind(this.numberPurchased.asString());
+
 
         this.progress = new SimpleDoubleProperty(0.0);
         this.mostRecentGain = new SimpleLongProperty(0);
@@ -118,10 +131,26 @@ public class Producer implements Runnable {
     }
 
     public double getDnaPerSecond(){
-        double gain = ((double)this.totalGain.get()/(double) this.currentInterval.toMillis())*1000.0;
-//        System.out.println((double)this.totalGain.get());
-//        System.out.println((double)this.currentInterval.toSeconds());
-        return gain;
+        double gain = 0.0;
+        if(this.numberPurchased.get() != 0) {
+            gain = ((double) this.totalGain.get() / (double) this.currentInterval.toMillis()) * 1000.0;
+        }
+        return Math.round(gain);
+    }
+
+
+    /**
+     * Sets up everything so that the labels show the correct information on startup
+     * @author James Howe
+     */
+    public void setInitialDisplay() {
+        this.costForNext.set(0);
+        this.costForNext.set(this.initialCost);
+
+        this.totalGain.set(0);
+        this.totalGain.set(this.initialGain);
+
+        this.timeProperty.set(Long.toString(this.currentInterval.toMillis()));
     }
 
 
@@ -138,18 +167,23 @@ public class Producer implements Runnable {
             return -1;
         }
 
+        //If its the first one then it Doesn't update the gain
+
+        if(this.numberPurchased.get() == 0){
+            this.totalGain.set((this.totalGain.get() - this.initialGain));
+        }
+
         //Update stuff
         long cost = this.costForNext.get();
         this.costForNext.set((long)(this.costForNext.get() * this.costMult));
 
         this.totalGain.set((this.totalGain.get() + this.initialGain));
 
-        this.numberPurchased += 1;
+        this.numberPurchased.set(this.numberPurchased.get() + 1);
 
-        if(this.numberPurchased == 5 || this.numberPurchased == 10 || (this.numberPurchased % 25) == 0){
+        if(this.numberPurchased.get() == 5 || this.numberPurchased.get() == 10 || (this.numberPurchased.get() % 25) == 0){
             this.currentInterval = Duration.ofMillis((long)(this.currentInterval.toMillis() * periodMult));
         }
-        System.out.println(this.currentInterval.toMillis());
         return cost;
 
     }
@@ -273,4 +307,13 @@ public class Producer implements Runnable {
     public Color getPartColor() {
         return partColor;
     }
+
+    public String getDisplayNumberPurchased() {
+        return displayNumberPurchased.get();
+    }
+
+    public SimpleStringProperty displayNumberPurchasedProperty() {
+        return displayNumberPurchased;
+    }
+
 }

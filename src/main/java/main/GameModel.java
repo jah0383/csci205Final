@@ -60,12 +60,12 @@ public class GameModel {
         this.buyMode = BuyMode.ONE;
         this.muted = new SimpleBooleanProperty(false);
         this.producers = new ArrayList<>();
-        this.producers.add(new Producer("P1",0,1000,1,1.01, Color.LIGHTGREEN));
-        this.producers.add(new Producer("P2",50,1,10,1.1, Color.BLUE));
-        this.producers.add(new Producer("P3",50,1,10,1.1, Color.MAGENTA));
-        this.producers.add(new Producer("P4",50,1,10,1.1, Color.YELLOWGREEN));
-        this.producers.add(new Producer("P5",50,1,10,1.1, Color.GRAY));
-        this.producers.add(new Producer("P6",50,1,10,1.1, Color.LIGHTCORAL));
+        this.producers.add(new Producer("P1",0,100,1,1, Color.LIGHTGREEN));
+        this.producers.add(new Producer("P2",500,25,3,1.1, Color.BLUE));
+        this.producers.add(new Producer("P3",2000,150,10,1.4, Color.MAGENTA));
+        this.producers.add(new Producer("P4",4000,400,20,1.5, Color.YELLOWGREEN));
+        this.producers.add(new Producer("P5",6000,1000,40,1.6, Color.GRAY));
+        this.producers.add(new Producer("P6",10000,9000,60,1.7, Color.LIGHTCORAL));
     }
 
 

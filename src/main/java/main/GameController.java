@@ -187,16 +187,21 @@ public class GameController {
 
             Label costLabel = (Label) ((HBox) displayVBox.getChildren().get(0)).getChildren().get(1);
             Label gainLabel = (Label) ((HBox) displayVBox.getChildren().get(1)).getChildren().get(1);
-            Label timeLabel = (Label) ((HBox) displayVBox.getChildren().get(2)).getChildren().get(1);
+            Label amountLabel = (Label) ((HBox) displayVBox.getChildren().get(2)).getChildren().get(1);
 
-            ProgressBar progressBar = (ProgressBar) producerVBox.getChildren().get(1);
+            HBox timeBox = (HBox) producerVBox.getChildren().get(1);
+            ProgressBar progressBar = (ProgressBar) timeBox.getChildren().get(0);
+            Label timeLabel = (Label) ((HBox) timeBox.getChildren().get(1)).getChildren().get(1);
+
 
 
             ChangeListener<String> costListener = (obs, oldStatus, newStatus) -> Platform.runLater(() -> costLabel.setText(newStatus));
             ChangeListener<String> gainListener = (obs, oldStatus, newStatus) -> Platform.runLater(() -> gainLabel.setText(newStatus));
+            ChangeListener<String> amountListener = (obs, oldValue, newValue) -> Platform.runLater(() -> amountLabel.textProperty().set(newValue));
             ChangeListener<String> timeListener = (obs, oldValue, newValue) -> Platform.runLater(() -> timeLabel.textProperty().set(newValue));
             this.theModel.producers.get(i).displayCostForNextProperty().addListener(costListener);
             this.theModel.producers.get(i).displayTotalGainProperty().addListener(gainListener);
+            this.theModel.producers.get(i).displayNumberPurchasedProperty().addListener(amountListener);
             this.theModel.producers.get(i).timePropertyProperty().addListener(timeListener);
 
             ChangeListener<Number> progressListener = (obs, oldValue, newValue) -> Platform.runLater(() -> progressBar.setProgress(newValue.doubleValue()));
@@ -204,6 +209,8 @@ public class GameController {
 
             ChangeListener<Number> mostRecentGainListener = (obs, oldStatus, newStatus) -> Platform.runLater(() -> this.theModel.setTotalDNA(this.theModel.getTotalDNA() + (long) newStatus));
             this.theModel.producers.get(i).mostRecentGainProperty().addListener(mostRecentGainListener);
+
+            this.theModel.producers.get(i).setInitialDisplay();
         }
     }
 
@@ -249,58 +256,42 @@ public class GameController {
             this.addParticle(this.theModel.getProducers().get(producerNumber - 1).getPartColor());
         }
         else {
-
-            //If the user wants to buy 1 of the producer
-            if (theModel.buyMode == ONE) {
-                long cost = this.theModel.getProducers().get(producerNumber - 1).buy(theModel.getTotalDNA());
-                this.addParticle(this.theModel.getProducers().get(producerNumber - 1).getPartColor());
-//                System.out.println(this.theModel.getProducers().get(producerNumber - 1).getNumberPurchased());
-                if (cost != -1 && this.theModel.getProducers().get(producerNumber - 1).getNumberPurchased() == 1) {
-                    new Thread(this.theModel.producers.get(producerNumber - 1)).start();
-                }
-                if (cost != -1) {
-                    theModel.setTotalDNA(theModel.getTotalDNA() - cost);
-                }
-            //If the user wants to buy 10 of the producer
-            } else if (theModel.buyMode == TEN) {
-                for (int i = 0; i < 10; i++) {
-                    long cost = this.theModel.getProducers().get(producerNumber - 1).buy(theModel.getTotalDNA());
-                    this.addParticle(this.theModel.getProducers().get(producerNumber - 1).getPartColor());
-                    if (cost == -1) {
-                        break;
-                    } else {
-                        theModel.setTotalDNA(theModel.getTotalDNA() - cost);
+            Producer producer = this.theModel.getProducers().get(producerNumber - 1);
+            long cost;
+            switch(theModel.buyMode){
+                case ONE:
+                    buyProducer(producer);
+                    break;
+                case TEN:
+                    for (int i = 0; i < 10; i++) {
+                        cost = buyProducer(producer);
+                        if (cost == -1) {
+                            break;
+                        }
                     }
-                }
-            //If the user wants to buy 100 of the producer
-            } else if (theModel.buyMode == ONEHUNDRED) {
-                for (int i = 0; i < 100; i++) {
-                    long cost = this.theModel.getProducers().get(producerNumber - 1).buy(theModel.getTotalDNA());
-                    this.addParticle(this.theModel.getProducers().get(producerNumber - 1).getPartColor());
-                    if (cost == -1) {
-                        break;
-                    } else {
-                        theModel.setTotalDNA(theModel.getTotalDNA() - cost);
+                    break;
+                case ONEHUNDRED:
+                    for (int i = 0; i < 100; i++) {
+                        cost = buyProducer(producer);
+                        if (cost == -1) {
+                            break;
+                        }
                     }
-                }
-
-
-            //If the user wants to buy the maximum possible amount of a producer
-            } //TODO - fill in max buy
-            else if (theModel.buyMode == MAX) {
-                //get the number of producers the user can purchase
-                int maxNum = theModel.calcMaxBuy();
-                while (true) {
-                    long cost = this.theModel.getProducers().get(producerNumber - 1).buy(theModel.getTotalDNA());
-                    if (cost == -1) {
-                        break;
-                    } else {
-                        theModel.setTotalDNA(theModel.getTotalDNA() - cost);
+                    break;
+                case MAX:
+                    while (true) {
+                        cost = buyProducer(producer);
+                        if (cost == -1) {
+                            break;
+                        }
                     }
-                }
+                    break;
+                default:
+                    buyProducer(producer);
+                    break;
             }
-
         }
+
         //Updates the total gain per second
         updateTotalGain();
     }
@@ -353,6 +344,26 @@ public class GameController {
     @FXML
     public void changeBuyModetoMAX() {
         theModel.buyMode = MAX;
+    }
+
+    /**
+     * Handles the buying of the producer,
+     * @param producer The producer you'd like to buy
+     * @return the Cost of the producer, more importantly a -1 if it couldn't be afforded
+     * @author James Howe
+     */
+    private long buyProducer(Producer producer) {
+        long cost = producer.buy(theModel.getTotalDNA());
+        System.out.println(producer.getNumberPurchased());
+        if (cost != -1 && producer.getNumberPurchased() == 1) {
+            new Thread(producer).start();
+            this.addParticle(producer.getPartColor());
+        }
+        if (cost != -1) {
+            this.addParticle(producer.getPartColor());
+            theModel.setTotalDNA(theModel.getTotalDNA() - cost);
+        }
+        return cost;
     }
 
     /**
