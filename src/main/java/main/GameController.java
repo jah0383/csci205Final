@@ -135,6 +135,9 @@ public class GameController {
         this.theView = theView;
     }
 
+    /**
+     * initializes the game
+     */
     @FXML
     public void initialize() throws FileNotFoundException {
 
@@ -238,6 +241,7 @@ public class GameController {
             this.addParticle();
         } else {
 
+            //If the user wants to buy 1 of the producer
             if (theModel.buyMode == ONE) {
                 long cost = this.theModel.getProducers().get(producerNumber - 1).buy(theModel.getTotalDNA());
                 System.out.println(this.theModel.getProducers().get(producerNumber - 1).getNumberPurchased());
@@ -247,6 +251,7 @@ public class GameController {
                 if (cost != -1) {
                     theModel.setTotalDNA(theModel.getTotalDNA() - cost);
                 }
+            //If the user wants to buy 10 of the producer
             } else if (theModel.buyMode == TEN) {
                 for (int i = 0; i < 10; i++) {
                     long cost = this.theModel.getProducers().get(producerNumber - 1).buy(theModel.getTotalDNA());
@@ -256,6 +261,7 @@ public class GameController {
                         theModel.setTotalDNA(theModel.getTotalDNA() - cost);
                     }
                 }
+            //If the user wants to buy 100 of the producer
             } else if (theModel.buyMode == ONEHUNDRED) {
                 for (int i = 0; i < 100; i++) {
                     long cost = this.theModel.getProducers().get(producerNumber - 1).buy(theModel.getTotalDNA());
@@ -265,6 +271,9 @@ public class GameController {
                         theModel.setTotalDNA(theModel.getTotalDNA() - cost);
                     }
                 }
+
+
+            //If the user wants to buy the maximum possible amount of a producer
             } //TODO - fill in max buy
             else if (theModel.buyMode == MAX) {
                 //get the number of producers the user can purchase
@@ -283,29 +292,54 @@ public class GameController {
     }
 
 
+    /**
+     * Changes the model's buyMode variable to the enumeration ONE
+     *
+     * used in button to buy 1 producer at a time
+     */
     @FXML
     public void changeBuyModeto1x() {
         theModel.buyMode = ONE;
     }
 
+
+    /**
+     * Changes the model's buyMode variable to the enumeration TEN
+     *
+     * used in button to buy 10 producers at a time
+     */
     @FXML
     public void changeBuyModeto10x() {
         theModel.buyMode = TEN;
     }
 
+    /**
+     * Changes the model's buyMode variable to the enumeration ONEHUNDRED
+     *
+     * used in button to buy 100 producers at a time
+     */
     @FXML
     public void changeBuyModeto100x() {
         theModel.buyMode = ONEHUNDRED;
     }
 
+    /**
+     * Changes the model's buyMode variable to the enumeration MAX
+     *
+     * used in button to buy maximum producers at a time
+     */
     @FXML
     public void changeBuyModetoMAX() {
         theModel.buyMode = MAX;
     }
 
     /**
-     * Toggles the music on or off
-     * @Author James Howe
+     * The control for the mute button
+     *
+     * if the sound is not already muted when pressed, mute the sound
+     *
+     * if the sound is already muted when pressed, unmute the sound
+     * @Author James Howe and Joseph
      */
     @FXML
     public void muteToggle(){

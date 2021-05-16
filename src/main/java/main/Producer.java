@@ -67,6 +67,14 @@ public class Producer implements Runnable {
 
     private SimpleLongProperty mostRecentGain;
 
+    /**
+     *
+     * @param name
+     * @param initialCost
+     * @param initialGain
+     * @param initialPeriod
+     * @param costMult
+     */
     //TODO JAVA DOC
     public Producer(String name,
                     long initialCost,
@@ -184,39 +192,74 @@ public class Producer implements Runnable {
     }
 
 
-
+    /**
+     *
+     * @return
+     */
     public double getProgress() {
         return progress.get();
     }
 
+    /**
+     *
+     * @return
+     */
     public SimpleDoubleProperty progressProperty() {
         return progress;
     }
+
+    /**
+     *
+     * @return
+     */
     public String getDisplayTotalGain() {
         return displayTotalGain.get();
     }
 
+    /**
+     *
+     * @return
+     */
     public SimpleStringProperty displayTotalGainProperty() {
         return displayTotalGain;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getDisplayCostForNext() {
         return displayCostForNext.get();
     }
 
+    /**
+     *
+     * @return
+     */
     public SimpleStringProperty displayCostForNextProperty() {
         return displayCostForNext;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getTimeProperty() {
         return timeProperty.get();
     }
 
+    /**
+     *
+     * @return
+     */
     public SimpleStringProperty timePropertyProperty() {
         return timeProperty;
     }
 
-
+    /**
+     *
+     * @return
+     */
     public long getInitialGain() {
         return initialGain;
     }
