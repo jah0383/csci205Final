@@ -149,6 +149,12 @@ public class GameController {
         ChangeListener<Number> DNAListener = (obs, oldStatus, newStatus) -> Platform.runLater(() -> dna_label1.setText(newStatus.toString()));
         this.theModel.totalDNAProperty().addListener(DNAListener);
 
+
+        ChangeListener<Number> DNAGainListener = (obs, oldStatus, newStatus) -> Platform.runLater(() -> dna_per_second1.setText(newStatus.toString()));
+        this.theModel.totalGainProperty().addListener(DNAGainListener);
+
+
+
         this.musicStart();
 
 
@@ -213,10 +219,10 @@ public class GameController {
      * Creates a small particle and adds it onto the body visual
      * @author James Howe
      */
-    public void addParticle(){
+    public void addParticle(Color color){
         Random rand = new Random();
         Circle particle = new Circle();
-        particle.setFill(Color.GREEN);
+        particle.setFill(color);
         particle.setRadius(1.5);
         particle.setCenterX(rand.nextDouble()*part_pane.getWidth());
         particle.setCenterY(rand.nextDouble()*part_pane.getHeight());
@@ -233,18 +239,22 @@ public class GameController {
     public void producerBuyHandler(Event event) {
         //Gets the id from the node which called the event
         String nodeID = ((Node) event.getSource()).getId();
-        System.out.println(nodeID);
         int producerNumber = Integer.parseInt(nodeID.substring(1, 2));
 
+
+
+        //Handles if its the first producer
         if (producerNumber == 1) {
             theModel.setTotalDNA(theModel.getTotalDNA() + this.theModel.getProducers().get(producerNumber - 1).getInitialGain());
-            this.addParticle();
-        } else {
+            this.addParticle(this.theModel.getProducers().get(producerNumber - 1).getPartColor());
+        }
+        else {
 
             //If the user wants to buy 1 of the producer
             if (theModel.buyMode == ONE) {
                 long cost = this.theModel.getProducers().get(producerNumber - 1).buy(theModel.getTotalDNA());
-                System.out.println(this.theModel.getProducers().get(producerNumber - 1).getNumberPurchased());
+                this.addParticle(this.theModel.getProducers().get(producerNumber - 1).getPartColor());
+//                System.out.println(this.theModel.getProducers().get(producerNumber - 1).getNumberPurchased());
                 if (cost != -1 && this.theModel.getProducers().get(producerNumber - 1).getNumberPurchased() == 1) {
                     new Thread(this.theModel.producers.get(producerNumber - 1)).start();
                 }
@@ -255,6 +265,7 @@ public class GameController {
             } else if (theModel.buyMode == TEN) {
                 for (int i = 0; i < 10; i++) {
                     long cost = this.theModel.getProducers().get(producerNumber - 1).buy(theModel.getTotalDNA());
+                    this.addParticle(this.theModel.getProducers().get(producerNumber - 1).getPartColor());
                     if (cost == -1) {
                         break;
                     } else {
@@ -265,6 +276,7 @@ public class GameController {
             } else if (theModel.buyMode == ONEHUNDRED) {
                 for (int i = 0; i < 100; i++) {
                     long cost = this.theModel.getProducers().get(producerNumber - 1).buy(theModel.getTotalDNA());
+                    this.addParticle(this.theModel.getProducers().get(producerNumber - 1).getPartColor());
                     if (cost == -1) {
                         break;
                     } else {
@@ -289,6 +301,16 @@ public class GameController {
             }
 
         }
+        //Updates the total gain per second
+        updateTotalGain();
+    }
+
+    private void updateTotalGain(){
+        Double gainAccumulator = 0.0;
+        for (int i = 1; i < this.theModel.getProducers().size(); i++) {
+            gainAccumulator += this.theModel.getProducers().get(i).getDnaPerSecond();
+        }
+        this.theModel.setTotalGain(gainAccumulator);
     }
 
 
@@ -344,7 +366,7 @@ public class GameController {
     @FXML
     public void muteToggle(){
         if (theModel.isMuted()){
-            musicPlayer.setVolume(1.0);
+            musicPlayer.setVolume(0.2);
         }else{
             musicPlayer.setVolume(0.0);
         }
@@ -362,6 +384,7 @@ public class GameController {
         musicPlayer = new MediaPlayer(sound);
         musicPlayer.setCycleCount(999999999);
         musicPlayer.setAutoPlay(true);
+        musicPlayer.setVolume(0.2);
     }
 
 

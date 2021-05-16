@@ -22,6 +22,7 @@ package main;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.scene.paint.Color;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -66,6 +67,8 @@ public class Producer implements Runnable {
     }
 
     private SimpleLongProperty mostRecentGain;
+    private Color partColor;
+    private volatile boolean shutdown = false;
 
     /**
      *
@@ -80,7 +83,8 @@ public class Producer implements Runnable {
                     long initialCost,
                     long initialGain,
                     long initialPeriod,
-                    double costMult) {
+                    double costMult,
+                    Color partColor) {
         this.name = name;
         this.initialCost = initialCost;
         this.initialGain = initialGain;
@@ -94,6 +98,8 @@ public class Producer implements Runnable {
         this.numberPurchased = 0;
         this.gainMult = 1;
         this.periodMult = .5;
+
+        this.partColor = partColor;
 
 
 
@@ -111,24 +117,18 @@ public class Producer implements Runnable {
 
     }
 
-    /**
-     * method to update the values of producer
-     */
-    public void update()
-    {}
-
-    /**
-     * getter for the gain of the producer
-     * @param timerInterval - interval of time to be used in calculating the producer's total gain
-     * @return totalGain - long value of the gain of the producer
-     */
-    public long getGain(Duration timerInterval){
-        return totalGain.get();
+    public double getDnaPerSecond(){
+        double gain = ((double)this.totalGain.get()/(double) this.currentInterval.toMillis())*1000.0;
+//        System.out.println((double)this.totalGain.get());
+//        System.out.println((double)this.currentInterval.toSeconds());
+        return gain;
     }
+
 
 
     /**
      * increases the costForNext and totalGain upon buying a producer
+     * @author James Howe
      */
     //TODO JAVA DOC
     public long buy(Long DNA) {
@@ -138,11 +138,6 @@ public class Producer implements Runnable {
             return -1;
         }
 
-        //If its the first one then it starts the thread
-
-//        if(this.numberPurchased == 0){
-//            this.run();
-//        }
         //Update stuff
         long cost = this.costForNext.get();
         this.costForNext.set((long)(this.costForNext.get() * this.costMult));
@@ -169,7 +164,12 @@ public class Producer implements Runnable {
         timeRemaining = Duration.ofSeconds(seconds);
         LocalDateTime timeInitialized = LocalDateTime.now();
         LocalDateTime timeEnd = timeInitialized.plusSeconds(seconds);
-        while (true){
+        while (!shutdown){
+            if(shutdown){
+                break;
+            }
+            System.out.println(shutdown);
+            System.out.println(this.name);
             this.timeProperty.setValue(Long.toString(this.timeRemaining.toMillis()));
             this.progress.set(1 - (double)timeRemaining.toMillis()/(double)currentInterval.toMillis());
             try {
@@ -189,6 +189,12 @@ public class Producer implements Runnable {
                 this.mostRecentGain.set(0);
             }
         }
+    }
+
+    public void shutdown() {
+        shutdown = true;
+        System.out.println(shutdown);
+
     }
 
 
@@ -262,5 +268,9 @@ public class Producer implements Runnable {
      */
     public long getInitialGain() {
         return initialGain;
+    }
+
+    public Color getPartColor() {
+        return partColor;
     }
 }

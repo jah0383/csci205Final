@@ -1,10 +1,12 @@
 package main;
 
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 public class Main extends Application {
 
@@ -28,8 +30,8 @@ public class Main extends Application {
     @Override
     public void init() throws Exception{
         super.init();
-        theModel = new GameModel();
-        theView = new GameView(theModel);
+        this.theModel = new GameModel();
+        this.theView = new GameView(theModel);
 
 
     }
@@ -43,29 +45,24 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
 
 
-
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/GuiV1.fxml"));
         Parent root = loader.load();
 
         theController = new GameController();
-        theController.setupController(theModel,theView);
-//        theController.musicStart();
-//        theController.initialize();
-
-
+        theController.setupController(theModel, theView);
 
 
         primaryStage.setTitle("Covid Clicker");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
 
-
+        //This just makes it so that when the window is closed the program stops
+        primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent event) {
+                System.exit(0);
+            }
+        });
     }
-
-
-//    public static void test() throws InterruptedException {
-//        Producer newCell = new Producer();
-//        newCell.run(5);
-//    }
 }
