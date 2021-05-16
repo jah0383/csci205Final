@@ -12,7 +12,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-import javafx.util.Duration;
 
 import java.nio.file.Paths;
 
@@ -121,6 +120,9 @@ public class GameController {
 
     }
 
+    /**
+     * initializes the game
+     */
     @FXML
     public void initialize() {
 
@@ -226,6 +228,7 @@ public class GameController {
             theModel.setTotalDNA(theModel.getTotalDNA() + this.theModel.getProducers().get(producerNumber - 1).getInitialGain());
         } else {
 
+            //If the user wants to buy 1 of the producer
             if (theModel.buyMode == ONE) {
                 long cost = this.theModel.getProducers().get(producerNumber - 1).buy(theModel.getTotalDNA());
                 System.out.println(this.theModel.getProducers().get(producerNumber - 1).getNumberPurchased());
@@ -235,6 +238,7 @@ public class GameController {
                 if (cost != -1) {
                     theModel.setTotalDNA(theModel.getTotalDNA() - cost);
                 }
+            //If the user wants to buy 10 of the producer
             } else if (theModel.buyMode == TEN) {
                 for (int i = 0; i < 10; i++) {
                     long cost = this.theModel.getProducers().get(producerNumber - 1).buy(theModel.getTotalDNA());
@@ -244,6 +248,7 @@ public class GameController {
                         theModel.setTotalDNA(theModel.getTotalDNA() - cost);
                     }
                 }
+            //If the user wants to buy 100 of the producer
             } else if (theModel.buyMode == ONEHUNDRED) {
                 for (int i = 0; i < 100; i++) {
                     long cost = this.theModel.getProducers().get(producerNumber - 1).buy(theModel.getTotalDNA());
@@ -253,6 +258,9 @@ public class GameController {
                         theModel.setTotalDNA(theModel.getTotalDNA() - cost);
                     }
                 }
+
+
+            //If the user wants to buy the maximum possible amount of a producer
             } //TODO - fill in max buy
             else if (theModel.buyMode == MAX) {
                 //get the number of producers the user can purchase
@@ -271,24 +279,61 @@ public class GameController {
     }
 
 
+    /**
+     * Changes the model's buyMode variable to the enumeration ONE
+     *
+     * used in button to buy 1 producer at a time
+     */
     @FXML
     public void changeBuyModeto1x() {
         theModel.buyMode = ONE;
     }
 
+
+    /**
+     * Changes the model's buyMode variable to the enumeration TEN
+     *
+     * used in button to buy 10 producers at a time
+     */
     @FXML
     public void changeBuyModeto10x() {
         theModel.buyMode = TEN;
     }
 
+    /**
+     * Changes the model's buyMode variable to the enumeration ONEHUNDRED
+     *
+     * used in button to buy 100 producers at a time
+     */
     @FXML
     public void changeBuyModeto100x() {
         theModel.buyMode = ONEHUNDRED;
     }
 
+    /**
+     * Changes the model's buyMode variable to the enumeration MAX
+     *
+     * used in button to buy maximum producers at a time
+     */
     @FXML
     public void changeBuyModetoMAX() {
         theModel.buyMode = MAX;
+    }
+
+    /**
+     * The control for the mute button
+     *
+     * if the sound is not already muted when pressed, mute the sound
+     *
+     * if the sound is already muted when pressed, unmute the sound
+     */
+    @FXML
+    public void muteButton(){
+        if (!theModel.muted){
+            musicMute();
+        }else if(theModel.muted){
+            musicUnMute();
+        }
     }
 
     MediaPlayer mediaPlayer;
@@ -296,15 +341,18 @@ public class GameController {
      * initializes the music at the start of the game
      */
     public void musicStart(){
-        String fileName = "Never Gonna Give You Up (8 Bit Remix Cover Version) [Tribute to Rick Astley] - 8 Bit Universe.mp3";
+        String fileName = "resources/Never Gonna Give You Up (8 Bit Remix Cover Version) [Tribute to Rick Astley] - 8 Bit Universe.mp3";
         Media sound = new Media(Paths.get(fileName).toUri().toString());
         mediaPlayer = new MediaPlayer(sound);
-        mediaPlayer.setOnEndOfMedia(new Runnable() {
+        mediaPlayer.setCycleCount(999999999);
+        mediaPlayer.setAutoPlay(true);
+
+        /*mediaPlayer.setOnEndOfMedia(new Runnable() {
             @Override
             public void run() {
                 mediaPlayer.seek(Duration.ZERO);
             }
-        });
+        });*/
         mediaPlayer.play();
     }
 
@@ -319,7 +367,7 @@ public class GameController {
      * Un-mutes the music
      */
     public void musicUnMute(){
-        mediaPlayer.setVolume(100.0);
+        mediaPlayer.setVolume(1.0);
     }
 
 }
