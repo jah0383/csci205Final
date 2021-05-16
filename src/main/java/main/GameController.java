@@ -2,7 +2,6 @@ package main;
 
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
-import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -15,10 +14,9 @@ import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.nio.file.Paths;
+import java.net.URL;
 import java.util.Random;
 
 import static main.BuyMode.*;
@@ -115,9 +113,11 @@ public class GameController {
     private Pane part_pane;
 
     private Image bodyMaskImage;
+    private MediaPlayer musicPlayer;
 
     /**
      * Constructor for the game controller
+     * @author James Howe
      */
     public GameController() {
         this.theModel = new GameModel();
@@ -133,12 +133,6 @@ public class GameController {
     public void setupController(GameModel theModel, GameView theView) {
         this.theModel = theModel;
         this.theView = theView;
-//        System.out.println(P2_time);
-//        P2_time = new Label();
-//        System.out.println(this.theModel.producers.get(1).timePropertyProperty());
-//        System.out.println(P2_time.textProperty().toString());
-
-
     }
 
     @FXML
@@ -147,6 +141,21 @@ public class GameController {
 
         linkAndBindProducers();
 
+        setImages();
+
+        ChangeListener<Number> DNAListener = (obs, oldStatus, newStatus) -> Platform.runLater(() -> dna_label1.setText(newStatus.toString()));
+        this.theModel.totalDNAProperty().addListener(DNAListener);
+
+        this.musicStart();
+
+
+    }
+
+    /**
+     * Sets the appropriate images for the visual representations in the game
+     * @author James Howe
+     */
+    private void setImages() {
         InputStream bodyStream = (getClass().getClassLoader().getResourceAsStream("BodyVisual.png"));
         Image bodyImage = new Image(bodyStream);
         visual.setImage(bodyImage);
@@ -154,11 +163,6 @@ public class GameController {
         InputStream bodyMaskStream = (getClass().getClassLoader().getResourceAsStream("BodyMask.png"));
         bodyMaskImage = new Image(bodyMaskStream);
         visual_mask.setImage(bodyMaskImage);
-
-        ChangeListener<Number> DNAListener = (obs, oldStatus, newStatus) -> Platform.runLater(() -> dna_label1.setText(newStatus.toString()));
-        this.theModel.totalDNAProperty().addListener(DNAListener);
-
-
     }
 
     /**
@@ -194,12 +198,6 @@ public class GameController {
         }
     }
 
-    /**
-     * handles events for producers, i.e. button click to buy cells
-     */
-    private void producerEventHandler() {
-        //if (theModel.producer)
-    }
 
     /**
      * handles events for the upgrades of producers
@@ -209,36 +207,10 @@ public class GameController {
     }
 
     /**
-     * updates the values of all items in the game
+     * Creates a small particle and adds it onto the body visual
+     * @author James Howe
      */
-    private void update() {
-
-    }
-
-    /**
-     * sets up the game
-     */
-    private void setup() {
-
-    }
-
-    /**
-     * loads game data from save
-     */
-    private void loadFromSave() {
-
-    }
-
-    @FXML
-    public void test(ActionEvent actionEvent) throws InterruptedException {
-//        System.out.println("test");
-////        System.out.println(this.theModel.producers.get(1).timePropertyProperty());
-//        new Thread(this.theModel.producers.get(1)).start();
-        //this.theModel.producers.get(1).run(5);
-
-    }
-
-    public void addCircle(){
+    public void addParticle(){
         Random rand = new Random();
         Circle particle = new Circle();
         particle.setFill(Color.GREEN);
@@ -263,7 +235,7 @@ public class GameController {
 
         if (producerNumber == 1) {
             theModel.setTotalDNA(theModel.getTotalDNA() + this.theModel.getProducers().get(producerNumber - 1).getInitialGain());
-            this.addCircle();
+            this.addParticle();
         } else {
 
             if (theModel.buyMode == ONE) {
@@ -331,46 +303,33 @@ public class GameController {
         theModel.buyMode = MAX;
     }
 
+    /**
+     * Toggles the music on or off
+     * @Author James Howe
+     */
     @FXML
-    public void muteButton(){
-        if (!theModel.muted){
-            musicMute();
-        }else if(theModel.muted){
-            musicUnMute();
+    public void muteToggle(){
+        if (theModel.isMuted()){
+            musicPlayer.setVolume(1.0);
+        }else{
+            musicPlayer.setVolume(0.0);
         }
+        theModel.toggleMute();
     }
 
-    MediaPlayer mediaPlayer;
-    /**
-     * initializes the music at the start of the game
-     */
-    public void musicStart(){
-//        String fileName = "resources/Never Gonna Give You Up (8 Bit Remix Cover Version) [Tribute to Rick Astley] - 8 Bit Universe.mp3";
-//        Media sound = new Media(Paths.get(fileName).toUri().toString());
-//        mediaPlayer = new MediaPlayer(sound);
-//        mediaPlayer.setCycleCount(999999999);
-//        mediaPlayer.setAutoPlay(true);
-//
-//        /*mediaPlayer.setOnEndOfMedia(new Runnable() {
-//            @Override
-//            public void run() {
-//                mediaPlayer.seek(Duration.ZERO);
-//            }
-//        });
-//        mediaPlayer.play();*/
-    }
 
     /**
-     * mutes the music
+     * Initializes the music at the start of the game
+     * @author Joseph
+     *
      */
-    public void musicMute(){
-        mediaPlayer.setVolume(0.0);
+    public void musicStart() throws FileNotFoundException {
+        URL musicUrl = getClass().getClassLoader().getResource("GameMusic.mp3");
+        Media sound = new Media("file://" + musicUrl.getPath());
+        musicPlayer = new MediaPlayer(sound);
+        musicPlayer.setCycleCount(999999999);
+        musicPlayer.setAutoPlay(true);
     }
 
-    /**
-     * Un-mutes the music
-     */
-    public void musicUnMute(){
-        mediaPlayer.setVolume(1.0);
-    }
+
 }

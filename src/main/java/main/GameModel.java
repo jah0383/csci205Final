@@ -1,5 +1,6 @@
 package main;
 
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleLongProperty;
 
 import java.time.LocalDateTime;
@@ -47,14 +48,14 @@ public class GameModel {
     /**
      * boolean if the program is mutted or not
      */
-    public boolean muted;
+    private SimpleBooleanProperty muted;
 
 
     public GameModel(){
         this.totalDNA = new SimpleLongProperty(0);
         this.totalGain = 0;
         this.buyMode = BuyMode.ONE;
-        this.muted = false;
+        this.muted = new SimpleBooleanProperty(false);
         this.producers = new ArrayList<>();
         this.producers.add(new Producer("P1",0,1000,1,1.01));
         this.producers.add(new Producer("P2",50,1,10,1.1));
@@ -82,5 +83,17 @@ public class GameModel {
 
     public void setTotalDNA(long totalDNA) {
         this.totalDNA.set(totalDNA);
+    }
+
+    public boolean isMuted() {
+        return muted.get();
+    }
+
+    public SimpleBooleanProperty mutedProperty() {
+        return muted;
+    }
+
+    public void toggleMute(){
+        this.muted.set(!this.muted.get());
     }
 }

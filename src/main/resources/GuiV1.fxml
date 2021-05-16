@@ -55,7 +55,7 @@
   <children>
       <HBox prefHeight="23.0" prefWidth="493.0">
          <children>
-            <ToggleButton mnemonicParsing="false" onAction="#musicMute" text="Mute" />
+            <ToggleButton mnemonicParsing="false" onAction="#muteToggle" text="Mute" />
          </children>
       </HBox>
       <HBox prefHeight="424.0" prefWidth="493.0">
