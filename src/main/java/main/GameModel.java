@@ -44,11 +44,17 @@ public class GameModel {
      */
     public BuyMode buyMode;
 
+    /**
+     * boolean if the program is mutted or not
+     */
+    public boolean muted;
+
 
     public GameModel(){
         this.totalDNA = new SimpleLongProperty(0);
         this.totalGain = 0;
         this.buyMode = BuyMode.ONE;
+        this.muted = false;
         this.producers = new ArrayList<>();
         this.producers.add(new Producer("P1",0,1000,1,1.01));
         this.producers.add(new Producer("P2",50,1,10,1.1));
