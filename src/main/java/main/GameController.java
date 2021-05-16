@@ -7,13 +7,19 @@ import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.*;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.nio.file.Paths;
+import java.util.Random;
 
 import static main.BuyMode.*;
 
@@ -95,6 +101,21 @@ public class GameController {
     @FXML
     private GridPane upgrade_grid;
 
+    @FXML
+    private ImageView visual;
+
+    @FXML
+    private ImageView visual_mask;
+
+
+    @FXML
+    private AnchorPane visual_pane;
+
+    @FXML
+    private Pane part_pane;
+
+    private Image bodyMaskImage;
+
     /**
      * Constructor for the game controller
      */
@@ -121,10 +142,19 @@ public class GameController {
     }
 
     @FXML
-    public void initialize() {
+    public void initialize() throws FileNotFoundException {
 
 
         linkAndBindProducers();
+
+        InputStream bodyStream = (getClass().getClassLoader().getResourceAsStream("BodyVisual.png"));
+        Image bodyImage = new Image(bodyStream);
+        visual.setImage(bodyImage);
+
+        InputStream bodyMaskStream = (getClass().getClassLoader().getResourceAsStream("BodyMask.png"));
+        bodyMaskImage = new Image(bodyMaskStream);
+        visual_mask.setImage(bodyMaskImage);
+
         ChangeListener<Number> DNAListener = (obs, oldStatus, newStatus) -> Platform.runLater(() -> dna_label1.setText(newStatus.toString()));
         this.theModel.totalDNAProperty().addListener(DNAListener);
 
@@ -208,6 +238,16 @@ public class GameController {
 
     }
 
+    public void addCircle(){
+        Random rand = new Random();
+        Circle particle = new Circle();
+        particle.setFill(Color.GREEN);
+        particle.setRadius(1.5);
+        particle.setCenterX(rand.nextDouble()*part_pane.getWidth());
+        particle.setCenterY(rand.nextDouble()*part_pane.getHeight());
+        part_pane.getChildren().add(particle);
+    }
+
     /**
      * This method is called whenever a producer button is pressed and handles the buying of producers
      *
@@ -223,6 +263,7 @@ public class GameController {
 
         if (producerNumber == 1) {
             theModel.setTotalDNA(theModel.getTotalDNA() + this.theModel.getProducers().get(producerNumber - 1).getInitialGain());
+            this.addCircle();
         } else {
 
             if (theModel.buyMode == ONE) {
@@ -304,19 +345,19 @@ public class GameController {
      * initializes the music at the start of the game
      */
     public void musicStart(){
-        String fileName = "resources/Never Gonna Give You Up (8 Bit Remix Cover Version) [Tribute to Rick Astley] - 8 Bit Universe.mp3";
-        Media sound = new Media(Paths.get(fileName).toUri().toString());
-        mediaPlayer = new MediaPlayer(sound);
-        mediaPlayer.setCycleCount(999999999);
-        mediaPlayer.setAutoPlay(true);
-
-        /*mediaPlayer.setOnEndOfMedia(new Runnable() {
-            @Override
-            public void run() {
-                mediaPlayer.seek(Duration.ZERO);
-            }
-        });
-        mediaPlayer.play();*/
+//        String fileName = "resources/Never Gonna Give You Up (8 Bit Remix Cover Version) [Tribute to Rick Astley] - 8 Bit Universe.mp3";
+//        Media sound = new Media(Paths.get(fileName).toUri().toString());
+//        mediaPlayer = new MediaPlayer(sound);
+//        mediaPlayer.setCycleCount(999999999);
+//        mediaPlayer.setAutoPlay(true);
+//
+//        /*mediaPlayer.setOnEndOfMedia(new Runnable() {
+//            @Override
+//            public void run() {
+//                mediaPlayer.seek(Duration.ZERO);
+//            }
+//        });
+//        mediaPlayer.play();*/
     }
 
     /**

@@ -50,6 +50,7 @@ public class Main extends Application {
 
         theController = new GameController();
         theController.setupController(theModel,theView);
+//        theController.musicStart();
 //        theController.initialize();
 
 
@@ -58,7 +59,7 @@ public class Main extends Application {
         primaryStage.setTitle("Covid Clicker");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
-        theController.musicStart();
+
 
     }
 
