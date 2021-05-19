@@ -25,73 +25,16 @@ public class GameController {
 
     // view and model loaded in
     private GameModel theModel;
-    private GameView theView;
 
     @FXML
     private VBox producer_pane;
 
-    @FXML
-    private VBox P1;
-
-    @FXML
-    private Button P1_btn;
-
-    @FXML
-    private VBox P2;
-
-    @FXML
-    private VBox P2_display;
-
-    @FXML
-    private Label P2_cost;
-
-    @FXML
-    private Label P2_gain;
-
-    @FXML
-    private Label P2_time;
-
-    @FXML
-    private VBox P3;
-
-    @FXML
-    private VBox P4;
-
-    @FXML
-    private VBox P5;
-
-    @FXML
-    private VBox P6;
-
-    @FXML
-    private Label dna_label;
 
     @FXML
     private Label dna_label1;
 
     @FXML
-    private Label dna_per_second;
-
-    @FXML
     private Label dna_per_second1;
-
-    @FXML
-    private Button buy_1x;
-
-    @FXML
-    private Button buy_10x;
-
-    @FXML
-    private Button buy_100x;
-
-    @FXML
-    private Button buy_max;
-
-    @FXML
-    private TabPane u;
-
-    @FXML
-    private Tab visuals_tab;
 
     @FXML
     private Tab upgrade_tab;
@@ -105,14 +48,9 @@ public class GameController {
     @FXML
     private ImageView visual_mask;
 
-
-    @FXML
-    private AnchorPane visual_pane;
-
     @FXML
     private Pane part_pane;
 
-    private Image bodyMaskImage;
     private MediaPlayer musicPlayer;
 
     /**
@@ -121,18 +59,15 @@ public class GameController {
      */
     public GameController() {
         this.theModel = new GameModel();
-        this.theView = new GameView(this.theModel);
     }
 
     /**
      * The constructor has to be zero argument for it to work with Scene Builder, so this is the real constructor
      *
-     * @param theView  is the view of the game, i.e. the scene
      * @param theModel is the model of the game, i.e. the info about all cells currently in the game
      */
-    public void setupController(GameModel theModel, GameView theView) {
+    public void setupController(GameModel theModel) {
         this.theModel = theModel;
-        this.theView = theView;
     }
 
     /**
@@ -170,7 +105,7 @@ public class GameController {
         visual.setImage(bodyImage);
 
         InputStream bodyMaskStream = (getClass().getClassLoader().getResourceAsStream("BodyMask.png"));
-        bodyMaskImage = new Image(bodyMaskStream);
+        Image bodyMaskImage = new Image(bodyMaskStream);
         visual_mask.setImage(bodyMaskImage);
     }
 
