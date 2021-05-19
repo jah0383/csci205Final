@@ -41,64 +41,14 @@ public class Producer implements Runnable {
     private Duration timeRemaining;
     private SimpleLongProperty totalGain;
     private SimpleDoubleProperty progress;
-    private SimpleStringProperty timeProperty; //TODO change this to string, add an update/format for it
+    private SimpleStringProperty timeProperty;
     private SimpleStringProperty displayTotalGain;
     private SimpleLongProperty numberPurchased;
     private SimpleStringProperty displayNumberPurchased;
     private SimpleDoubleProperty gainMult;
     private SimpleDoubleProperty periodMult;
-
-    public long getNumberPurchased() {
-        return numberPurchased.get();
-    }
-
-    public SimpleLongProperty numberPurchasedProperty() {
-        return numberPurchased;
-    }
-
-    public void setNumberPurchased(long numberPurchased) {
-        this.numberPurchased.set(numberPurchased);
-    }
-
-    public double getGainMult() {
-        return gainMult.get();
-    }
-
-    public SimpleDoubleProperty gainMultProperty() {
-        return gainMult;
-    }
-
-    public void setGainMult(double gainMult) {
-        this.gainMult.set(gainMult);
-    }
-
-    public double getPeriodMult() {
-        return periodMult.get();
-    }
-
-    public SimpleDoubleProperty periodMultProperty() {
-        return periodMult;
-    }
-
-    public void setPeriodMult(double periodMult) {
-        this.periodMult.set(periodMult);
-    }
-
-    public long getMostRecentGain() {
-        return mostRecentGain.get();
-    }
-
-    public SimpleLongProperty mostRecentGainProperty() {
-        return mostRecentGain;
-    }
-
-    public void setMostRecentGain(long mostRecentGain) {
-        this.mostRecentGain.set(mostRecentGain);
-    }
-
     private SimpleLongProperty mostRecentGain;
     private Color partColor;
-    private volatile boolean shutdown = false;
 
     /**
      *
@@ -115,35 +65,36 @@ public class Producer implements Runnable {
                     long initialPeriod,
                     double costMult,
                     Color partColor) {
+
         this.name = name;
         this.initialCost = initialCost;
-        this.initialGain = initialGain;
-        this.initialPeriod = initialPeriod;
         this.costMult = costMult;
         this.costForNext = new SimpleLongProperty(this.initialCost);
+
+        this.initialGain = initialGain;
+        this.totalGain = new SimpleLongProperty(0);
+        this.gainMult = new SimpleDoubleProperty(1);
+
+        this.initialPeriod = initialPeriod;
         this.currentInterval = Duration.ofSeconds(initialPeriod);
         this.timeRemaining = this.currentInterval;
         this.timeProperty = new SimpleStringProperty(Double.toString(initialPeriod));
-        this.totalGain = new SimpleLongProperty(0);
-        this.numberPurchased = new SimpleLongProperty(0);
-        this.gainMult = new SimpleDoubleProperty(1);
         this.periodMult = new SimpleDoubleProperty(1);
 
-        this.partColor = partColor;
 
+        this.numberPurchased = new SimpleLongProperty(0);
+
+        this.partColor = partColor;
 
 
         this.displayCostForNext = new SimpleStringProperty(this.costForNext.getValue().toString());
         this.displayCostForNext.bind(this.costForNext.asString());
 
-
-
         this.displayTotalGain = new SimpleStringProperty(this.totalGain.getValue().toString());
-        this.displayTotalGain.bind(this.totalGain.asString());
+        this.displayTotalGain.bind(this.totalGain.multiply(this.gainMult).asString());
 
         this.displayNumberPurchased = new SimpleStringProperty((this.numberPurchased.getValue().toString()));
-        this.displayNumberPurchased.bind(this.numberPurchased.multiply(this.gainMult).asString());
-
+        this.displayNumberPurchased.bind(this.numberPurchased.asString());
 
         this.progress = new SimpleDoubleProperty(0.0);
         this.mostRecentGain = new SimpleLongProperty(0);
@@ -153,7 +104,7 @@ public class Producer implements Runnable {
     public double getDnaPerSecond(){
         double gain = 0.0;
         if(this.numberPurchased.get() != 0) {
-            gain = ((double) this.totalGain.get() / (double) this.currentInterval.toMillis()) * 1000.0;
+            gain = ((double) (this.totalGain.get() * gainMult.get()) / (double) (this.currentInterval.toMillis() * periodMult.get())) * 1000.0;
         }
         return Math.round(gain);
     }
@@ -320,6 +271,54 @@ public class Producer implements Runnable {
 
     public SimpleStringProperty displayNumberPurchasedProperty() {
         return displayNumberPurchased;
+    }
+
+    public long getNumberPurchased() {
+        return numberPurchased.get();
+    }
+
+    public SimpleLongProperty numberPurchasedProperty() {
+        return numberPurchased;
+    }
+
+    public void setNumberPurchased(long numberPurchased) {
+        this.numberPurchased.set(numberPurchased);
+    }
+
+    public double getGainMult() {
+        return gainMult.get();
+    }
+
+    public SimpleDoubleProperty gainMultProperty() {
+        return gainMult;
+    }
+
+    public void setGainMult(double gainMult) {
+        this.gainMult.set(gainMult);
+    }
+
+    public double getPeriodMult() {
+        return periodMult.get();
+    }
+
+    public SimpleDoubleProperty periodMultProperty() {
+        return periodMult;
+    }
+
+    public void setPeriodMult(double periodMult) {
+        this.periodMult.set(periodMult);
+    }
+
+    public long getMostRecentGain() {
+        return mostRecentGain.get();
+    }
+
+    public SimpleLongProperty mostRecentGainProperty() {
+        return mostRecentGain;
+    }
+
+    public void setMostRecentGain(long mostRecentGain) {
+        this.mostRecentGain.set(mostRecentGain);
     }
 
 }

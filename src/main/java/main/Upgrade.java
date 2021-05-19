@@ -18,54 +18,27 @@
  */
 package main;
 
+import javafx.beans.property.SimpleBooleanProperty;
+
 public class Upgrade{
     private Producer producer;
     private String name;
-    private boolean purchasedGainX2;
-    private boolean purchasedGainX8;
-    private boolean purchasedPeriodX4;
-    private boolean purchasedPeriodX16;
+    private SimpleBooleanProperty purchasedGainX2;
+    private SimpleBooleanProperty purchasedGainX8;
+    private SimpleBooleanProperty purchasedPeriodX4;
+    private SimpleBooleanProperty purchasedPeriodX16;
 
     public Upgrade(String name, Producer producer) {
         this.producer = producer;
         this.name = name;
-        this.purchasedGainX2 = false;
-        this.purchasedGainX8 = false;
-        this.purchasedPeriodX4 = false;
-        this.purchasedPeriodX16 = false;
+        this.purchasedGainX2 = new SimpleBooleanProperty(false);
+        this.purchasedGainX8 = new SimpleBooleanProperty(false);
+        this.purchasedPeriodX4 = new SimpleBooleanProperty(false);
+        this.purchasedPeriodX16 = new SimpleBooleanProperty(false);
     }
 
-    public boolean isPurchasedGainX2() {
-        return purchasedGainX2;
-    }
 
-    public void setPurchasedGainX2(boolean purchasedGainX2) {
-        this.purchasedGainX2 = purchasedGainX2;
-    }
 
-    public boolean isPurchasedGainX8() {
-        return purchasedGainX8;
-    }
-
-    public void setPurchasedGainX8(boolean purchasedGainX8) {
-        this.purchasedGainX8 = purchasedGainX8;
-    }
-
-    public boolean isPurchasedPeriodX4() {
-        return purchasedPeriodX4;
-    }
-
-    public void setPurchasedPeriodX4(boolean purchasedPeriodX4) {
-        this.purchasedPeriodX4 = purchasedPeriodX4;
-    }
-
-    public boolean isPurchasedPeriodX16() {
-        return purchasedPeriodX16;
-    }
-
-    public void setPurchasedPeriodX16(boolean purchasedPeriodX16) {
-        this.purchasedPeriodX16 = purchasedPeriodX16;
-    }
 
     public double getCurrentGainMult(){
         return this.producer.getGainMult();
@@ -88,31 +61,65 @@ public class Upgrade{
         double currentGainMult = getCurrentGainMult();
         double newGainMult = currentGainMult * 2;
         onPurchace(newGainMult, 0);
-        setPurchasedGainX2(true);
-        return isPurchasedGainX2();
+        this.purchasedGainX2.set(true);
+        return this.purchasedGainX2.get();
     }
 
     public boolean upgradeGainX8(){
         double currentGainMult = getCurrentGainMult();
         double newGainMult = currentGainMult * 8;
         onPurchace(newGainMult, 0);
-        setPurchasedGainX8(true);
-        return isPurchasedGainX8();
+        this.purchasedGainX8.set(true);
+        return this.purchasedGainX2.get();
     }
 
     public boolean upgradePeriodX4(){
         double currentPeriodMult = getCurrentPeriodMult();
         double newPeriodMult = currentPeriodMult / 4;
         onPurchace(0, newPeriodMult);
-        setPurchasedPeriodX4(true);
-        return isPurchasedPeriodX4();
+        this.purchasedPeriodX4.set(true);
+        return this.purchasedPeriodX4.get();
     }
+
+
 
     public boolean upgradePeriodX16(){
         double currentPeriodMult = getCurrentPeriodMult();
         double newPeriodMult = currentPeriodMult / 16;
         onPurchace(0, newPeriodMult);
-        setPurchasedPeriodX16(true);
-        return isPurchasedPeriodX16();
+        this.purchasedPeriodX16.set(true);
+        return this.purchasedPeriodX16.get();
+    }
+
+    public boolean isPurchasedGainX2() {
+        return purchasedGainX2.get();
+    }
+
+    public SimpleBooleanProperty purchasedGainX2Property() {
+        return purchasedGainX2;
+    }
+
+    public boolean isPurchasedGainX8() {
+        return purchasedGainX8.get();
+    }
+
+    public SimpleBooleanProperty purchasedGainX8Property() {
+        return purchasedGainX8;
+    }
+
+    public boolean isPurchasedPeriodX4() {
+        return purchasedPeriodX4.get();
+    }
+
+    public SimpleBooleanProperty purchasedPeriodX4Property() {
+        return purchasedPeriodX4;
+    }
+
+    public boolean isPurchasedPeriodX16() {
+        return purchasedPeriodX16.get();
+    }
+
+    public SimpleBooleanProperty purchasedPeriodX16Property() {
+        return purchasedPeriodX16;
     }
 }
