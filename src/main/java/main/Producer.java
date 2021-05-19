@@ -202,8 +202,6 @@ public class Producer implements Runnable {
             if(shutdown){
                 break;
             }
-            System.out.println(shutdown);
-            System.out.println(this.name);
             this.timeProperty.setValue(Long.toString(this.timeRemaining.toMillis()));
             this.progress.set(1 - (double)timeRemaining.toMillis()/(double)currentInterval.toMillis());
             try {
@@ -211,9 +209,7 @@ public class Producer implements Runnable {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-//            System.out.print("Time remaining: "+ timeRemaining + " seconds.");
             LocalDateTime timeNow = LocalDateTime.now();
-//            System.out.println(" It is now: " + timeNow);
             timeRemaining = Duration.between(timeNow, timeEnd);
             if (timeRemaining.isNegative()){
                 timeRemaining = Duration.ofMillis(currentInterval.toMillis());

@@ -354,7 +354,6 @@ public class GameController {
      */
     private long buyProducer(Producer producer) {
         long cost = producer.buy(theModel.getTotalDNA());
-        System.out.println(producer.getNumberPurchased());
         if (cost != -1 && producer.getNumberPurchased() == 1) {
             new Thread(producer).start();
             this.addParticle(producer.getPartColor());

@@ -34,5 +34,5 @@ dependencies {
 }
 
 application {
-    mainClassName = project.hasProperty("mainClass") ? project.getProperty("mainClass") : "lab08.tempconvertermvc.TempConverterMain"
+    mainClassName = project.hasProperty("mainClass") ? project.getProperty("mainClass") : "Main.Main"
 }
