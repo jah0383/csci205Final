@@ -382,6 +382,13 @@ public class GameController {
 
     };
 
+    /**
+     * Checks if the upgrade is able to be bought (If the upgrade is not purchased already and if there is enough DNA stored).
+     * If able, then the upgrade is purchased and the DNA is subtracted from the total.
+     * @param upgrade The relevant upgrade that is being bought from upgrade event handler.
+     * @return True if successful purchase, false if insufficient DNA and or already bought.
+     * @author Michael Gertz
+     */
     private boolean buyUpgradeGainX2(Upgrade upgrade){
         long cost = 1000;
         long currentDNA = theModel.getTotalDNA();
@@ -393,6 +400,13 @@ public class GameController {
         return isPurchased;
     }
 
+    /**
+     * Checks if the upgrade is able to be bought (If the upgrade is not purchased already and if there is enough DNA stored).
+     * If able, then the upgrade is purchased and the DNA is subtracted from the total.
+     * @param upgrade The relevant upgrade that is being bought from upgrade event handler.
+     * @return True if successful purchase, false if insufficient DNA and or already bought.
+     * @author Michael Gertz
+     */
     private boolean buyUpgradeGainX8(Upgrade upgrade){
         long cost = 10000;
         long currentDNA = theModel.getTotalDNA();
@@ -404,6 +418,13 @@ public class GameController {
         return isPurchased;
     }
 
+    /**
+     * Checks if the upgrade is able to be bought (If the upgrade is not purchased already and if there is enough DNA stored).
+     * If able, then the upgrade is purchased and the DNA is subtracted from the total.
+     * @param upgrade The relevant upgrade that is being bought from upgrade event handler.
+     * @return True if successful purchase, false if insufficient DNA and or already bought.
+     * @author Michael Gertz
+     */
     private boolean buyUpgradePeriodX4(Upgrade upgrade){
         long cost = 3000;
         long currentDNA = theModel.getTotalDNA();
@@ -415,6 +436,13 @@ public class GameController {
         return isPurchased;
     }
 
+    /**
+     * Checks if the upgrade is able to be bought (If the upgrade is not purchased already and if there is enough DNA stored).
+     * If able, then the upgrade is purchased and the DNA is subtracted from the total.
+     * @param upgrade The relevant upgrade that is being bought from upgrade event handler.
+     * @return True if successful purchase, false if insufficient DNA and or already bought.
+     * @author Michael Gertz
+     */
     private boolean buyUpgradePeriodX16(Upgrade upgrade){
         long cost = 30000;
         long currentDNA = theModel.getTotalDNA();
