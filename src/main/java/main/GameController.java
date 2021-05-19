@@ -27,6 +27,9 @@ import static main.BuyMode.*;
 public class GameController {
 
     // view and model loaded in
+    /**
+     * instance of GameModel
+     */
     private GameModel theModel;
 
     @FXML
@@ -53,12 +56,15 @@ public class GameController {
 
     @FXML
     private Pane part_pane;
-
     @FXML
     private VBox upgrade_vbox;
 
     private Image bodyMaskImage;
     private MediaPlayer musicPlayer;
+    /**
+     * MediaPlayer object (for music)
+     */
+
 
     /**
      * Constructor for the game controller
@@ -275,6 +281,12 @@ public class GameController {
         updateTotalGain();
     }
 
+    /**
+     * updates the totalGain of the program
+     *
+     * calculates the sum of the total DNA gain per second for each producer
+     * sets theModel's total Gain to the sum
+     */
     private void updateTotalGain(){
         Double gainAccumulator = 0.0;
         for (int i = 1; i < this.theModel.getProducers().size(); i++) {

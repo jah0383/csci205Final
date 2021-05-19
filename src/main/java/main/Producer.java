@@ -30,33 +30,104 @@ import java.time.LocalDateTime;
 public class Producer implements Runnable {
 
     private String name;
+
+    /**
+     * long value of the initial (first) cost of the producer
+     */
     private long initialCost;
+
+    /**
+     * long value of the initial (first) gain of the cost of the producer
+     */
     private long initialGain;
 
     private long initialPeriod;
-    private double costMult;
-    private SimpleLongProperty costForNext;
-    private SimpleStringProperty displayCostForNext;
-    private Duration currentInterval;
-    private Duration timeRemaining;
-    private SimpleLongProperty totalGain;
-    private SimpleDoubleProperty progress;
-    private SimpleStringProperty timeProperty;
-    private SimpleStringProperty displayTotalGain;
-    private SimpleLongProperty numberPurchased;
-    private SimpleStringProperty displayNumberPurchased;
-    private SimpleDoubleProperty gainMult;
-    private SimpleDoubleProperty periodMult;
-    private SimpleLongProperty mostRecentGain;
-    private Color partColor;
 
     /**
-     *
-     * @param name
-     * @param initialCost
-     * @param initialGain
-     * @param initialPeriod
-     * @param costMult
+     * double value for the cost multiplier of the producer
+     */
+    private double costMult;
+
+    /**
+     * Value for the cost of the next purchase of the same producer
+     */
+    private SimpleLongProperty costForNext;
+
+    /**
+     * Value for the cost of the next purchase of the same producer in string format
+     */
+    private SimpleStringProperty displayCostForNext;
+
+    /**
+     * Duration for the time it takes the producer to produce
+     */
+    private Duration currentInterval;
+
+    /**
+     * Duration for the time remaining until the producer produces
+     */
+    private Duration timeRemaining;
+
+    /**
+     * total gain for the producer
+     */
+    private SimpleLongProperty totalGain;
+
+    /**
+     * current progress towards the next production
+     */
+    private SimpleDoubleProperty progress;
+
+    /**
+     * String for the time left of the producer's production
+     */
+    private SimpleStringProperty timeProperty; //TODO change this to string, add an update/format for it
+
+    /**
+     * String for the total gain of the producer to be displayed
+     */
+    private SimpleStringProperty displayTotalGain;
+    /**
+     * the total number of a producer owned
+     */
+    private SimpleLongProperty numberPurchased;
+
+    /**
+     * String for the total number purchased for display
+     */
+    private SimpleStringProperty displayNumberPurchased;
+
+    /**
+     * gain multiplier for the producer
+     */
+    private SimpleDoubleProperty gainMult;
+
+    /**
+     * multiplier for the period of production for the producer
+     */
+    private SimpleDoubleProperty periodMult;
+
+
+
+
+    /**
+     * the most recent gain of the producer
+     */
+    private SimpleLongProperty mostRecentGain;
+
+    /**
+     * color for the appearing dots in the body visual
+     */
+    private Color partColor;
+
+
+    /**
+     * Constructor that sets the initial values for the producer
+     * @param name - String value for name of the producer
+     * @param initialCost - long value for the initial cost of the producer
+     * @param initialGain - long value for the initial gain of the producer
+     * @param initialPeriod - long value for the initial period of production of the producer
+     * @param costMult - double value for the cost multiplier of the producer
      */
     //TODO JAVA DOC
     public Producer(String name,
@@ -101,6 +172,13 @@ public class Producer implements Runnable {
 
     }
 
+    /**
+     * gets the current DNA per second from the gain
+     *
+     * calculates the current DNA per second from the gain
+     *
+     * @return Math.round(gain) - the rounded value of gain
+     */
     public double getDnaPerSecond(){
         double gain = 0.0;
         if(this.numberPurchased.get() != 0) {
@@ -160,7 +238,7 @@ public class Producer implements Runnable {
 
 
     /**
-     *
+     * begins the producer's production
      */
     @Override
     public void run() {
@@ -190,133 +268,193 @@ public class Producer implements Runnable {
 
 
     /**
-     *
-     * @return
+     * getter for the progress of the producer
+     * @return progress.get() - double value of the current progress of the producer
      */
     public double getProgress() {
         return progress.get();
     }
 
     /**
-     *
-     * @return
+     * returns progress of the producer
+     * @return progress - the current progress of the producer
      */
     public SimpleDoubleProperty progressProperty() {
         return progress;
     }
 
     /**
-     *
-     * @return
+     * getter for the displayed string value of the total gain of the producer
+     * @return displayTotalGain.get() - String of the total gain of the producer
      */
     public String getDisplayTotalGain() {
         return displayTotalGain.get();
     }
 
     /**
-     *
-     * @return
+     * returns the displayTotalGain string property
+     * @return displayTotalGain - String of the total gain of the producer
      */
     public SimpleStringProperty displayTotalGainProperty() {
         return displayTotalGain;
     }
 
     /**
-     *
-     * @return
+     * getter for the String value of the cost for next of the producer
+     * @return displayCostForNext.get() - String of cost for the next purchase of the producer
      */
     public String getDisplayCostForNext() {
         return displayCostForNext.get();
     }
 
     /**
-     *
-     * @return
+     *  returns the display value for the cost for the next purchase of a producer
+     * @return displayCostForNext - string of the cost for the next purchase of a producer
      */
     public SimpleStringProperty displayCostForNextProperty() {
         return displayCostForNext;
     }
 
     /**
-     *
-     * @return
+     * getter for the String value of the time property of the producer
+     * @return timeProperty.get() - String of the timeProperty of the producer
      */
     public String getTimeProperty() {
         return timeProperty.get();
     }
 
     /**
-     *
-     * @return
+     * returns the display value for the time of the producer
+     * @return timeProperty - a string of the producer's time proerty
      */
     public SimpleStringProperty timePropertyProperty() {
         return timeProperty;
     }
 
     /**
-     *
-     * @return
+     * getter for the initial gain of the producer
+     * @return initialGain - long value for the initial gain of the producer
      */
     public long getInitialGain() {
         return initialGain;
     }
 
+    /**
+     * getter for the part color of the producer (color of the appearing dots in the visual)
+     * @return partColor - Color of the dots
+     */
     public Color getPartColor() {
         return partColor;
     }
 
+    /**
+     * getter for the display value of the number purchased of a producer
+     * @return displayNumberPurchased.get() - string of the number purchased to be displayed
+     */
     public String getDisplayNumberPurchased() {
         return displayNumberPurchased.get();
     }
 
+    /**
+     * returns the display for the number purchased of the producer
+     * @return displayNumberPurchased - number of a kind of producer purchased to be displayed
+     */
     public SimpleStringProperty displayNumberPurchasedProperty() {
         return displayNumberPurchased;
     }
 
+    /**
+     * Getter that returns the number purchased of a producer
+     * @return numberPurchased.get() - the amount purchased of a single producer
+     */
     public long getNumberPurchased() {
         return numberPurchased.get();
     }
 
+    /**
+     * getter for the number purchased of a producer
+     * @return numberPurchased - long value of the number of a producer purchased
+     */
     public SimpleLongProperty numberPurchasedProperty() {
         return numberPurchased;
     }
 
+    /**
+     * setter for the number pruchased of the producer
+     * @param numberPurchased - long value for numberPurchased to be set to
+     */
     public void setNumberPurchased(long numberPurchased) {
         this.numberPurchased.set(numberPurchased);
     }
 
+    /**
+     * getter for the gain multiplier of the producer
+     * @return gainMult.get() - double value for the gain multiplier of the producer
+     */
     public double getGainMult() {
         return gainMult.get();
     }
 
+    /**
+     * returns the gain multiplier of the producer
+     * @return gainMult - the gian multiplier of the producer
+     */
     public SimpleDoubleProperty gainMultProperty() {
         return gainMult;
     }
 
+    /**
+     * setter for the gain multiplier of the producer
+     * @param gainMult - double value for gainMult to be set to
+     */
     public void setGainMult(double gainMult) {
         this.gainMult.set(gainMult);
     }
 
+    /**
+     * getter for the period multiplier of a producer
+     * @return periodMult.get() - double value for the period multiplier of the producer
+     */
     public double getPeriodMult() {
         return periodMult.get();
     }
 
+    /**
+     * returns the period multiplier of the producer
+     * @return periodMult - double of the period multiplier of the producer
+     */
     public SimpleDoubleProperty periodMultProperty() {
         return periodMult;
     }
 
+    /**
+     * setter for the period multiplier of the producer
+     * @param periodMult - double value for periodMult to be set to
+     */
     public void setPeriodMult(double periodMult) {
         this.periodMult.set(periodMult);
     }
 
+    /**
+     * getter for the most recent gain of the producer
+     * @return mostRecentGain.get() - long alue of the most recent gain
+     */
     public long getMostRecentGain() {
         return mostRecentGain.get();
     }
 
+    /**
+     * returns the most recent gain value
+     * @return mostRecentGain - the most recent gain value
+     */
     public SimpleLongProperty mostRecentGainProperty() {
         return mostRecentGain;
     }
 
+    /**
+     * sets the most recent gain
+     * @param mostRecentGain - long value for mostRecentGain to be set to
+     */
     public void setMostRecentGain(long mostRecentGain) {
         this.mostRecentGain.set(mostRecentGain);
     }
