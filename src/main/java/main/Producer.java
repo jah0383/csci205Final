@@ -157,7 +157,7 @@ public class Producer implements Runnable {
     public double getDnaPerSecond(){
         double gain = 0.0;
         if(this.numberPurchased.get() != 0) {
-            gain = ((double) this.totalGain.get() / (double) this.currentInterval.toMillis()) * 1000.0;
+            gain = ((double) (this.totalGain.get() * this.gainMult.get()) / (double) (this.currentInterval.toMillis() * this.periodMult.get())) * 1000.0;
         }
         return Math.round(gain);
     }

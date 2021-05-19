@@ -231,6 +231,10 @@ public class GameController {
         updateTotalGain();
     }
 
+    /**
+     * This updates the current DNA per second, by computing the sum of each producers dna per second
+     * @author James Howe
+     */
     private void updateTotalGain(){
         Double gainAccumulator = 0.0;
         for (int i = 1; i < this.theModel.getProducers().size(); i++) {
