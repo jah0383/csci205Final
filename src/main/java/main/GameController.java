@@ -106,6 +106,16 @@ public class GameController {
         this.musicStart();
 
 
+        setupUpgrades();
+
+
+    }
+
+    /**
+     * This Method Handles the setup for the upgrades, naming them, assigning an action to them, and binding them
+     * it then adds it to the upgrades tab in the window
+     */
+    private void setupUpgrades() {
         for (int i = 1; i < this.theModel.getUpgrades().size(); i++) {
             Button gainUp1 = new Button();
             gainUp1.setPrefWidth(248);
@@ -144,12 +154,7 @@ public class GameController {
             upgrade_vbox.getChildren().add(gainUp2);
             upgrade_vbox.getChildren().add(periodUp1);
             upgrade_vbox.getChildren().add(periodUp2);
-
-
-
         }
-
-
     }
 
     /**
@@ -356,6 +361,10 @@ public class GameController {
         return cost;
     }
 
+    /**
+     * This Event handler deals with when an upgrade has been purchased and calls the relevant buy method
+     * from controller
+     */
     EventHandler<ActionEvent> upgradeBuy = new EventHandler<ActionEvent>() {
         @Override
         public void handle(ActionEvent event){
