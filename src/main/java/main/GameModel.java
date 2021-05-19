@@ -34,14 +34,16 @@ public class GameModel {
      */
     private String saveDataFilePath;
 
-    public ArrayList<Producer> getProducers() {
-        return producers;
-    }
+
 
     /**
      * The list of producers
      */
     public ArrayList<Producer> producers;
+
+
+
+    public ArrayList<Upgrade> upgrades;
 
     /**
      * The current buy mode of the game (1x/10x/100x/MAX)
@@ -68,6 +70,14 @@ public class GameModel {
         this.producers.add(new Producer("P4",4000,400,20,1.5, Color.YELLOWGREEN));
         this.producers.add(new Producer("P5",6000,1000,40,1.6, Color.GRAY));
         this.producers.add(new Producer("P6",10000,9000,60,1.7, Color.LIGHTCORAL));
+
+        this.upgrades = new ArrayList<>();
+        this.upgrades.add(new Upgrade("P1 Upgrades", this.producers.get(0)));
+        this.upgrades.add(new Upgrade("P2 Upgrades", this.producers.get(1)));
+        this.upgrades.add(new Upgrade("P3 Upgrades", this.producers.get(2)));
+        this.upgrades.add(new Upgrade("P4 Upgrades", this.producers.get(3)));
+        this.upgrades.add(new Upgrade("P5 Upgrades", this.producers.get(4)));
+        this.upgrades.add(new Upgrade("P6 Upgrades", this.producers.get(5)));
     }
 
 
@@ -141,5 +151,14 @@ public class GameModel {
      */
     public void setTotalGain(double totalGain) {
         this.totalGain.set(totalGain);
+    }
+
+
+    public ArrayList<Producer> getProducers() {
+        return producers;
+    }
+
+    public ArrayList<Upgrade> getUpgrades() {
+        return upgrades;
     }
 }

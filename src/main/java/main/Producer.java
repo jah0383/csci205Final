@@ -87,7 +87,6 @@ public class Producer implements Runnable {
      * String for the total gain of the producer to be displayed
      */
     private SimpleStringProperty displayTotalGain;
-
     /**
      * the total number of a producer owned
      */
@@ -109,101 +108,7 @@ public class Producer implements Runnable {
     private SimpleDoubleProperty periodMult;
 
 
-    /**
-     * Getter that returns the number purchased of a producer
-     * @return numberPurchased.get() - the amount purchased of a single producer
-     */
-    public long getNumberPurchased() {
-        return numberPurchased.get();
-    }
 
-    /**
-     * getter for the number purchased of a producer
-     * @return numberPurchased - long value of the number of a producer purchased
-     */
-    public SimpleLongProperty numberPurchasedProperty() {
-        return numberPurchased;
-    }
-
-    /**
-     * setter for the number pruchased of the producer
-     * @param numberPurchased - long value for numberPurchased to be set to
-     */
-    public void setNumberPurchased(long numberPurchased) {
-        this.numberPurchased.set(numberPurchased);
-    }
-
-    /**
-     * getter for the gain multiplier of the producer
-     * @return gainMult.get() - double value for the gain multiplier of the producer
-     */
-    public double getGainMult() {
-        return gainMult.get();
-    }
-
-    /**
-     * returns the gain multiplier of the producer
-     * @return gainMult - the gian multiplier of the producer
-     */
-    public SimpleDoubleProperty gainMultProperty() {
-        return gainMult;
-    }
-
-    /**
-     * setter for the gain multiplier of the producer
-     * @param gainMult - double value for gainMult to be set to
-     */
-    public void setGainMult(double gainMult) {
-        this.gainMult.set(gainMult);
-    }
-
-    /**
-     * getter for the period multiplier of a producer
-     * @return periodMult.get() - double value for the period multiplier of the producer
-     */
-    public double getPeriodMult() {
-        return periodMult.get();
-    }
-
-    /**
-     * returns the period multiplier of the producer
-     * @return periodMult - double of the period multiplier of the producer
-     */
-    public SimpleDoubleProperty periodMultProperty() {
-        return periodMult;
-    }
-
-    /**
-     * setter for the period multiplier of the producer
-     * @param periodMult - double value for periodMult to be set to
-     */
-    public void setPeriodMult(double periodMult) {
-        this.periodMult.set(periodMult);
-    }
-
-    /**
-     * getter for the most recent gain of the producer
-     * @return mostRecentGain.get() - long alue of the most recent gain
-     */
-    public long getMostRecentGain() {
-        return mostRecentGain.get();
-    }
-
-    /**
-     * returns the most recent gain value
-     * @return mostRecentGain - the most recent gain value
-     */
-    public SimpleLongProperty mostRecentGainProperty() {
-        return mostRecentGain;
-    }
-
-    /**
-     * sets the most recent gain
-     * @param mostRecentGain - long value for mostRecentGain to be set to
-     */
-    public void setMostRecentGain(long mostRecentGain) {
-        this.mostRecentGain.set(mostRecentGain);
-    }
 
     /**
      * the most recent gain of the producer
@@ -215,7 +120,6 @@ public class Producer implements Runnable {
      */
     private Color partColor;
 
-    private volatile boolean shutdown = false;
 
     /**
      * Constructor that sets the initial values for the producer
@@ -232,35 +136,36 @@ public class Producer implements Runnable {
                     long initialPeriod,
                     double costMult,
                     Color partColor) {
+
         this.name = name;
         this.initialCost = initialCost;
-        this.initialGain = initialGain;
-        this.initialPeriod = initialPeriod;
         this.costMult = costMult;
         this.costForNext = new SimpleLongProperty(this.initialCost);
+
+        this.initialGain = initialGain;
+        this.totalGain = new SimpleLongProperty(0);
+        this.gainMult = new SimpleDoubleProperty(1);
+
+        this.initialPeriod = initialPeriod;
         this.currentInterval = Duration.ofSeconds(initialPeriod);
         this.timeRemaining = this.currentInterval;
         this.timeProperty = new SimpleStringProperty(Double.toString(initialPeriod));
-        this.totalGain = new SimpleLongProperty(0);
-        this.numberPurchased = new SimpleLongProperty(0);
-        this.gainMult = new SimpleDoubleProperty(1);
         this.periodMult = new SimpleDoubleProperty(1);
 
-        this.partColor = partColor;
 
+        this.numberPurchased = new SimpleLongProperty(0);
+
+        this.partColor = partColor;
 
 
         this.displayCostForNext = new SimpleStringProperty(this.costForNext.getValue().toString());
         this.displayCostForNext.bind(this.costForNext.asString());
 
-
-
         this.displayTotalGain = new SimpleStringProperty(this.totalGain.getValue().toString());
-        this.displayTotalGain.bind(this.totalGain.asString());
+        this.displayTotalGain.bind(this.totalGain.multiply(this.gainMult).asString());
 
         this.displayNumberPurchased = new SimpleStringProperty((this.numberPurchased.getValue().toString()));
-        this.displayNumberPurchased.bind(this.numberPurchased.multiply(this.gainMult).asString());
-
+        this.displayNumberPurchased.bind(this.numberPurchased.asString());
 
         this.progress = new SimpleDoubleProperty(0.0);
         this.mostRecentGain = new SimpleLongProperty(0);
@@ -277,11 +182,10 @@ public class Producer implements Runnable {
     public double getDnaPerSecond(){
         double gain = 0.0;
         if(this.numberPurchased.get() != 0) {
-            gain = ((double) this.totalGain.get() / (double) this.currentInterval.toMillis()) * 1000.0;
+            gain = ((double) (this.totalGain.get() * gainMult.get()) / (double) (this.currentInterval.toMillis() * periodMult.get())) * 1000.0;
         }
         return Math.round(gain);
     }
-
 
     /**
      * Sets up everything so that the labels show the correct information on startup
@@ -457,6 +361,102 @@ public class Producer implements Runnable {
      */
     public SimpleStringProperty displayNumberPurchasedProperty() {
         return displayNumberPurchased;
+    }
+
+    /**
+     * Getter that returns the number purchased of a producer
+     * @return numberPurchased.get() - the amount purchased of a single producer
+     */
+    public long getNumberPurchased() {
+        return numberPurchased.get();
+    }
+
+    /**
+     * getter for the number purchased of a producer
+     * @return numberPurchased - long value of the number of a producer purchased
+     */
+    public SimpleLongProperty numberPurchasedProperty() {
+        return numberPurchased;
+    }
+
+    /**
+     * setter for the number pruchased of the producer
+     * @param numberPurchased - long value for numberPurchased to be set to
+     */
+    public void setNumberPurchased(long numberPurchased) {
+        this.numberPurchased.set(numberPurchased);
+    }
+
+    /**
+     * getter for the gain multiplier of the producer
+     * @return gainMult.get() - double value for the gain multiplier of the producer
+     */
+    public double getGainMult() {
+        return gainMult.get();
+    }
+
+    /**
+     * returns the gain multiplier of the producer
+     * @return gainMult - the gian multiplier of the producer
+     */
+    public SimpleDoubleProperty gainMultProperty() {
+        return gainMult;
+    }
+
+    /**
+     * setter for the gain multiplier of the producer
+     * @param gainMult - double value for gainMult to be set to
+     */
+    public void setGainMult(double gainMult) {
+        this.gainMult.set(gainMult);
+    }
+
+    /**
+     * getter for the period multiplier of a producer
+     * @return periodMult.get() - double value for the period multiplier of the producer
+     */
+    public double getPeriodMult() {
+        return periodMult.get();
+    }
+
+    /**
+     * returns the period multiplier of the producer
+     * @return periodMult - double of the period multiplier of the producer
+     */
+    public SimpleDoubleProperty periodMultProperty() {
+        return periodMult;
+    }
+
+    /**
+     * setter for the period multiplier of the producer
+     * @param periodMult - double value for periodMult to be set to
+     */
+    public void setPeriodMult(double periodMult) {
+        this.periodMult.set(periodMult);
+    }
+
+    /**
+     * getter for the most recent gain of the producer
+     * @return mostRecentGain.get() - long alue of the most recent gain
+     */
+    public long getMostRecentGain() {
+        return mostRecentGain.get();
+    }
+
+    /**
+     * returns the most recent gain value
+     * @return mostRecentGain - the most recent gain value
+     */
+    public SimpleLongProperty mostRecentGainProperty() {
+        return mostRecentGain;
+    }
+
+    /**
+     * sets the most recent gain
+     * @param mostRecentGain - long value for mostRecentGain to be set to
+     */
+    public void setMostRecentGain(long mostRecentGain) {
+        this.mostRecentGain.set(mostRecentGain);
     }
 
 }
