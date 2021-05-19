@@ -34,5 +34,5 @@ dependencies {
 }
 
 application {
-    mainClassName = project.hasProperty("mainClass") ? project.getProperty("mainClass") : "Main.Main"
+    mainClassName = project.hasProperty("mainClass") ? project.getProperty("mainClass") : "main.Main"
 }
