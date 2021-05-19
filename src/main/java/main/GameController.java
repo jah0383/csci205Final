@@ -216,13 +216,6 @@ public class GameController {
 
 
     /**
-     * handles events for the upgrades of producers
-     */
-    private void upgradeEventHandler() {
-
-    }
-
-    /**
      * Creates a small particle and adds it onto the body visual
      * @author James Howe
      */
@@ -363,6 +356,54 @@ public class GameController {
             theModel.setTotalDNA(theModel.getTotalDNA() - cost);
         }
         return cost;
+    }
+
+    public void upgradeBuyEventHandler(Event event){
+
+    }
+
+    private boolean buyUpgradeGainX2(Upgrade upgrade){
+        long cost = 1000;
+        long currentDNA = theModel.getTotalDNA();
+        boolean isPurchased = upgrade.isPurchasedGainX2();
+        if(!isPurchased && currentDNA >= cost){
+            isPurchased = upgrade.upgradeGainX2();
+            theModel.setTotalDNA(theModel.getTotalDNA() - cost);
+        }
+        return isPurchased;
+    }
+
+    private boolean buyUpgradeGainX8(Upgrade upgrade){
+        long cost = 10000;
+        long currentDNA = theModel.getTotalDNA();
+        boolean isPurchased = upgrade.isPurchasedGainX8();
+        if(!isPurchased && currentDNA >= cost){
+            isPurchased = upgrade.upgradeGainX8();
+            theModel.setTotalDNA(theModel.getTotalDNA() - cost);
+        }
+        return isPurchased;
+    }
+
+    private boolean buyUpgradePeriodX4(Upgrade upgrade){
+        long cost = 3000;
+        long currentDNA = theModel.getTotalDNA();
+        boolean isPurchased = upgrade.isPurchasedPeriodX4();
+        if(!isPurchased && currentDNA >= cost){
+            isPurchased = upgrade.upgradePeriodX4();
+            theModel.setTotalDNA(theModel.getTotalDNA() - cost);
+        }
+        return isPurchased;
+    }
+
+    private boolean buyUpgradePeriodX16(Upgrade upgrade){
+        long cost = 30000;
+        long currentDNA = theModel.getTotalDNA();
+        boolean isPurchased = upgrade.isPurchasedPeriodX16();
+        if(!isPurchased && currentDNA >= cost){
+            isPurchased = upgrade.upgradePeriodX16();
+            theModel.setTotalDNA(theModel.getTotalDNA() - cost);
+        }
+        return isPurchased;
     }
 
     /**

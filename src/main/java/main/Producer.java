@@ -33,8 +33,6 @@ public class Producer implements Runnable {
     private long initialCost;
     private long initialGain;
 
-
-
     private long initialPeriod;
     private double costMult;
     private SimpleLongProperty costForNext;
@@ -45,6 +43,10 @@ public class Producer implements Runnable {
     private SimpleDoubleProperty progress;
     private SimpleStringProperty timeProperty; //TODO change this to string, add an update/format for it
     private SimpleStringProperty displayTotalGain;
+    private SimpleLongProperty numberPurchased;
+    private SimpleStringProperty displayNumberPurchased;
+    private SimpleDoubleProperty gainMult;
+    private SimpleDoubleProperty periodMult;
 
     public long getNumberPurchased() {
         return numberPurchased.get();
@@ -57,9 +59,6 @@ public class Producer implements Runnable {
     public void setNumberPurchased(long numberPurchased) {
         this.numberPurchased.set(numberPurchased);
     }
-
-    private SimpleLongProperty numberPurchased;
-    private SimpleStringProperty displayNumberPurchased;
 
     public double getGainMult() {
         return gainMult.get();
@@ -84,9 +83,6 @@ public class Producer implements Runnable {
     public void setPeriodMult(double periodMult) {
         this.periodMult.set(periodMult);
     }
-
-    private SimpleDoubleProperty gainMult;
-    private SimpleDoubleProperty periodMult;
 
     public long getMostRecentGain() {
         return mostRecentGain.get();
@@ -161,7 +157,6 @@ public class Producer implements Runnable {
         }
         return Math.round(gain);
     }
-
 
     /**
      * Sets up everything so that the labels show the correct information on startup
