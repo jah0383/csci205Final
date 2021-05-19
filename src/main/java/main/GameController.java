@@ -60,10 +60,12 @@ public class GameController {
     private VBox upgrade_vbox;
 
     private Image bodyMaskImage;
-    private MediaPlayer musicPlayer;
+
     /**
      * MediaPlayer object (for music)
      */
+    private MediaPlayer musicPlayer;
+
 
 
     /**
@@ -84,28 +86,42 @@ public class GameController {
     }
 
     /**
-     * initializes the game
+     * Initializes the game doing what a constructor would normally do, but due to some quirks of when FXML stuff is loaded
+     * has to be done, outside of the constructor
+     * @author James Howe
      */
     @FXML
-    public void initialize() throws FileNotFoundException {
-
+    public void initialize(){
 
         linkAndBindProducers();
 
+        setupUpgrades();
+
         setImages();
 
+        setupModelDNA();
+
+        this.musicStart();
+    }
+
+    /**
+     * This handles the linking of the DNA information to the model
+     * @author James Howe
+     */
+    private void setupModelDNA() {
         ChangeListener<Number> DNAListener = (obs, oldStatus, newStatus) -> Platform.runLater(() -> dna_label1.setText(newStatus.toString()));
         this.theModel.totalDNAProperty().addListener(DNAListener);
 
-
         ChangeListener<Number> DNAGainListener = (obs, oldStatus, newStatus) -> Platform.runLater(() -> dna_per_second1.setText(newStatus.toString()));
         this.theModel.totalGainProperty().addListener(DNAGainListener);
+    }
 
-
-
-        this.musicStart();
-
-
+    /**
+     * This Method Handles the setup for the upgrades, naming them, assigning an action to them, and binding them
+     * it then adds it to the upgrades tab in the window
+     * @author James Howe
+     */
+    private void setupUpgrades() {
         for (int i = 1; i < this.theModel.getUpgrades().size(); i++) {
             Button gainUp1 = new Button();
             gainUp1.setPrefWidth(248);
@@ -144,19 +160,14 @@ public class GameController {
             upgrade_vbox.getChildren().add(gainUp2);
             upgrade_vbox.getChildren().add(periodUp1);
             upgrade_vbox.getChildren().add(periodUp2);
-
-
-
         }
-
-
     }
 
     /**
      * Sets the appropriate images for the visual representations in the game
      * @author James Howe
      */
-    private void setImages() {
+    private void setImages(){
         InputStream bodyStream = (getClass().getClassLoader().getResourceAsStream("BodyVisual.png"));
         Image bodyImage = new Image(bodyStream);
         visual.setImage(bodyImage);
@@ -168,7 +179,6 @@ public class GameController {
 
     /**
      * This method links everything in the scene to everything that's in the model
-     *
      * @author James Howe
      */
     private void linkAndBindProducers() {
@@ -237,8 +247,8 @@ public class GameController {
 
         //Handles if its the first producer
         if (producerNumber == 1) {
-            theModel.setTotalDNA(theModel.getTotalDNA() + this.theModel.getProducers().get(producerNumber - 1).getInitialGain());
-            this.addParticle(this.theModel.getProducers().get(producerNumber - 1).getPartColor());
+            theModel.setTotalDNA(theModel.getTotalDNA() + this.theModel.getProducers().get(0).getInitialGain());
+            this.addParticle(this.theModel.getProducers().get(0).getPartColor());
         }
         else {
             Producer producer = this.theModel.getProducers().get(producerNumber - 1);
@@ -356,7 +366,11 @@ public class GameController {
         return cost;
     }
 
-    EventHandler<ActionEvent> upgradeBuy = new EventHandler<ActionEvent>() {
+    /**
+     * This Event handler deals with when an upgrade has been purchased and calls the relevant buy method
+     * from controller
+     */
+    EventHandler<ActionEvent> upgradeBuy = new EventHandler<>() {
         @Override
         public void handle(ActionEvent event){
             String nodeID = ((Node) event.getSource()).getId();
@@ -460,7 +474,7 @@ public class GameController {
      * if the sound is not already muted when pressed, mute the sound
      *
      * if the sound is already muted when pressed, unmute the sound
-     * @Author James Howe and Joseph
+     * @author Joseph and James Howe
      */
     @FXML
     public void muteToggle(){
@@ -477,7 +491,7 @@ public class GameController {
      * Initializes the music at the start of the game
      * @author Joseph and James Howe
      */
-    public void musicStart() throws FileNotFoundException {
+    public void musicStart() throws NullPointerException {
         URL musicUrl = getClass().getClassLoader().getResource("GameMusic.mp3");
         Media sound = new Media("file://" + musicUrl.getPath());
         musicPlayer = new MediaPlayer(sound);
