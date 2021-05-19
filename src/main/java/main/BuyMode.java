@@ -7,5 +7,5 @@ public enum BuyMode {
     ONE,
     TEN,
     ONEHUNDRED,
-    MAX;
+    MAX
 }

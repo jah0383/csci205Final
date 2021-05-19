@@ -1,12 +1,10 @@
 package main;
 
 import javafx.application.Application;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 
 public class Main extends Application {
 
@@ -16,9 +14,8 @@ public class Main extends Application {
     /**
      * main method
      * @param args
-     * @throws InterruptedException
      */
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) {
         launch(args);
     }
 
@@ -56,11 +53,6 @@ public class Main extends Application {
         primaryStage.show();
 
         //This just makes it so that when the window is closed the program stops
-        primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-            @Override
-            public void handle(WindowEvent event) {
-                System.exit(0);
-            }
-        });
+        primaryStage.setOnCloseRequest(event -> System.exit(0));
     }
 }
