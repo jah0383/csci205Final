@@ -80,7 +80,7 @@ public class Upgrade{
     public boolean upgradeGainX2(){
         double currentGainMult = getCurrentGainMult();
         double newGainMult = currentGainMult * 2;
-        onGainPurchace(newGainMult, 0);
+        onGainPurchase(newGainMult);
         this.purchasedGainX2.set(true);
         return this.purchasedGainX2.get();
     }
@@ -93,7 +93,7 @@ public class Upgrade{
     public boolean upgradeGainX8(){
         double currentGainMult = getCurrentGainMult();
         double newGainMult = currentGainMult * 8;
-        onGainPurchace(newGainMult, 0);
+        onGainPurchase(newGainMult);
         this.purchasedGainX8.set(true);
         return this.purchasedGainX2.get();
     }
@@ -106,7 +106,7 @@ public class Upgrade{
     public boolean upgradePeriodX4(){
         double currentPeriodMult = getCurrentPeriodMult();
         double newPeriodMult = currentPeriodMult / 4;
-        onPeriodPurchace(0, newPeriodMult);
+        onPeriodPurchase(newPeriodMult);
         this.purchasedPeriodX4.set(true);
         return this.purchasedPeriodX4.get();
     }
@@ -121,7 +121,7 @@ public class Upgrade{
     public boolean upgradePeriodX16(){
         double currentPeriodMult = getCurrentPeriodMult();
         double newPeriodMult = currentPeriodMult / 16;
-        onPeriodPurchace(0, newPeriodMult);
+        onPeriodPurchase(newPeriodMult);
         this.purchasedPeriodX16.set(true);
         return this.purchasedPeriodX16.get();
     }
