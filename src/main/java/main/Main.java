@@ -11,7 +11,6 @@ import javafx.stage.WindowEvent;
 public class Main extends Application {
 
     private GameModel theModel;
-    private GameView theView;
     private GameController theController;
 
     /**
@@ -31,7 +30,6 @@ public class Main extends Application {
     public void init() throws Exception{
         super.init();
         this.theModel = new GameModel();
-        this.theView = new GameView(theModel);
 
 
     }
@@ -50,7 +48,7 @@ public class Main extends Application {
         Parent root = loader.load();
 
         theController = new GameController();
-        theController.setupController(theModel, theView);
+        theController.setupController(theModel);
 
 
         primaryStage.setTitle("Covid Clicker");

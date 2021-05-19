@@ -54,7 +54,9 @@ public class GameModel {
      */
     private SimpleBooleanProperty muted;
 
-
+    /**
+     * Constructor that initializes the producers that the user is able to purchase
+     */
     public GameModel(){
         this.totalDNA = new SimpleLongProperty(0);
         this.totalGain = new SimpleDoubleProperty(0.0);
@@ -83,19 +85,34 @@ public class GameModel {
 
     }
 
-
+    /**
+     * gets the total DNA of the program
+     * @return totalDNA.get() - the current total DNA of the program
+     */
     public long getTotalDNA() {
         return totalDNA.get();
     }
 
+    /**
+     * getter for the total DNA of the program
+     * @return totalDNA - the total DNA that the user has
+     */
     public SimpleLongProperty totalDNAProperty() {
         return totalDNA;
     }
 
+    /**
+     * sets the total DNA of the program
+     * @param totalDNA - long value for totalDNA to be set to
+     */
     public void setTotalDNA(long totalDNA) {
         this.totalDNA.set(totalDNA);
     }
 
+    /**
+     * checks and returns the program's muted boolean property
+     * @return muted.get() - boolean value of if the program is muted or not
+     */
     public boolean isMuted() {
         return muted.get();
     }
@@ -104,6 +121,12 @@ public class GameModel {
         return muted;
     }
 
+    /**
+     * changes the muted property of the program
+     *
+     * if the program's muted property is true, change it to false
+     * if the program's muted property is false, change it to true
+     */
     public void toggleMute(){
         this.muted.set(!this.muted.get());
     }
@@ -112,10 +135,18 @@ public class GameModel {
         return totalGain.get();
     }
 
+    /**
+     * Getter for the totalGain of the program
+     * @return totalGain - the totalGain of all the producers
+     */
     public SimpleDoubleProperty totalGainProperty() {
         return totalGain;
     }
 
+    /**
+     * Sets the total gain of the producers
+     * @param totalGain - double value for totalGain to be set to
+     */
     public void setTotalGain(double totalGain) {
         this.totalGain.set(totalGain);
     }
