@@ -61,8 +61,32 @@ public class Producer implements Runnable {
     private SimpleLongProperty numberPurchased;
     private SimpleStringProperty displayNumberPurchased;
 
-    private double gainMult;
-    private double periodMult;
+    public double getGainMult() {
+        return gainMult.get();
+    }
+
+    public SimpleDoubleProperty gainMultProperty() {
+        return gainMult;
+    }
+
+    public void setGainMult(double gainMult) {
+        this.gainMult.set(gainMult);
+    }
+
+    public double getPeriodMult() {
+        return periodMult.get();
+    }
+
+    public SimpleDoubleProperty periodMultProperty() {
+        return periodMult;
+    }
+
+    public void setPeriodMult(double periodMult) {
+        this.periodMult.set(periodMult);
+    }
+
+    private SimpleDoubleProperty gainMult;
+    private SimpleDoubleProperty periodMult;
 
     public long getMostRecentGain() {
         return mostRecentGain.get();
@@ -106,8 +130,8 @@ public class Producer implements Runnable {
         this.timeProperty = new SimpleStringProperty(Double.toString(initialPeriod));
         this.totalGain = new SimpleLongProperty(0);
         this.numberPurchased = new SimpleLongProperty(0);
-        this.gainMult = 1;
-        this.periodMult = .5;
+        this.gainMult = new SimpleDoubleProperty(1);
+        this.periodMult = new SimpleDoubleProperty(1);
 
         this.partColor = partColor;
 
@@ -122,7 +146,7 @@ public class Producer implements Runnable {
         this.displayTotalGain.bind(this.totalGain.asString());
 
         this.displayNumberPurchased = new SimpleStringProperty((this.numberPurchased.getValue().toString()));
-        this.displayNumberPurchased.bind(this.numberPurchased.asString());
+        this.displayNumberPurchased.bind(this.numberPurchased.multiply(this.gainMult).asString());
 
 
         this.progress = new SimpleDoubleProperty(0.0);
@@ -182,7 +206,7 @@ public class Producer implements Runnable {
         this.numberPurchased.set(this.numberPurchased.get() + 1);
 
         if(this.numberPurchased.get() == 5 || this.numberPurchased.get() == 10 || (this.numberPurchased.get() % 25) == 0){
-            this.currentInterval = Duration.ofMillis((long)(this.currentInterval.toMillis() * periodMult));
+            this.currentInterval = Duration.ofMillis((long)(this.currentInterval.toMillis() * .5));
         }
         return cost;
 
@@ -198,10 +222,7 @@ public class Producer implements Runnable {
         timeRemaining = Duration.ofSeconds(seconds);
         LocalDateTime timeInitialized = LocalDateTime.now();
         LocalDateTime timeEnd = timeInitialized.plusSeconds(seconds);
-        while (!shutdown){
-            if(shutdown){
-                break;
-            }
+        while (true){
             this.timeProperty.setValue(Long.toString(this.timeRemaining.toMillis()));
             this.progress.set(1 - (double)timeRemaining.toMillis()/(double)currentInterval.toMillis());
             try {
@@ -212,19 +233,13 @@ public class Producer implements Runnable {
             LocalDateTime timeNow = LocalDateTime.now();
             timeRemaining = Duration.between(timeNow, timeEnd);
             if (timeRemaining.isNegative()){
-                timeRemaining = Duration.ofMillis(currentInterval.toMillis());
+                timeRemaining = Duration.ofMillis(Math.round(currentInterval.toNanos() * this.periodMult.get()));
                 timeNow = LocalDateTime.now();
-                timeEnd = timeNow.plusNanos(currentInterval.toNanos());
-                this.mostRecentGain.set(this.totalGain.get());
+                timeEnd = timeNow.plusNanos(Math.round(currentInterval.toNanos() * this.periodMult.get()));
+                this.mostRecentGain.set(Math.round(this.totalGain.get() * this.gainMult.get()));
                 this.mostRecentGain.set(0);
             }
         }
-    }
-
-    public void shutdown() {
-        shutdown = true;
-        System.out.println(shutdown);
-
     }
 
 
