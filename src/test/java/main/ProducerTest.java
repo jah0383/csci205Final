@@ -14,7 +14,7 @@ class ProducerTest {
 
     @BeforeEach
     void setup(){
-       testProducer = new Producer("Test P1",100,100,2,1.5, Color.LIGHTGREEN);
+       testProducer = new Producer("Test P",100,100,2,1.5, Color.LIGHTGREEN);
     }
 
     @AfterEach
