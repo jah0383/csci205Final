@@ -69,11 +69,11 @@ public class GameModel {
         this.producers.add(new Producer("P6",10000,9000,60,1.7, Color.LIGHTCORAL));
         this.upgrades = new ArrayList<>();
         this.upgrades.add(new Upgrade("P1 Upgrades", this.producers.get(0)));
-        this.upgrades.add(new Upgrade("P1 Upgrades", this.producers.get(1)));
-        this.upgrades.add(new Upgrade("P1 Upgrades", this.producers.get(2)));
-        this.upgrades.add(new Upgrade("P1 Upgrades", this.producers.get(3)));
-        this.upgrades.add(new Upgrade("P1 Upgrades", this.producers.get(4)));
-        this.upgrades.add(new Upgrade("P1 Upgrades", this.producers.get(5)));
+        this.upgrades.add(new Upgrade("P2 Upgrades", this.producers.get(1)));
+        this.upgrades.add(new Upgrade("P3 Upgrades", this.producers.get(2)));
+        this.upgrades.add(new Upgrade("P4 Upgrades", this.producers.get(3)));
+        this.upgrades.add(new Upgrade("P5 Upgrades", this.producers.get(4)));
+        this.upgrades.add(new Upgrade("P6 Upgrades", this.producers.get(5)));
     }
 
 
