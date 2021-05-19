@@ -43,9 +43,6 @@ public class Upgrade{
         this.purchasedPeriodX16 = new SimpleBooleanProperty(false);
     }
 
-
-
-
     public double getCurrentGainMult(){
         return this.producer.getGainMult();
     }
@@ -95,7 +92,7 @@ public class Upgrade{
         double newGainMult = currentGainMult * 8;
         onGainPurchase(newGainMult);
         this.purchasedGainX8.set(true);
-        return this.purchasedGainX2.get();
+        return this.purchasedGainX8.get();
     }
 
     /**
