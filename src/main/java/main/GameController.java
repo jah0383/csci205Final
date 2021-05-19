@@ -236,7 +236,7 @@ public class GameController {
      * @author James Howe
      */
     @FXML
-    public void producerBuyHandler(Event event) {
+    public void producerBuyHandler(Event event)     {
         //Gets the id from the node which called the event
         String nodeID = ((Node) event.getSource()).getId();
         int producerNumber = Integer.parseInt(nodeID.substring(1, 2));
