@@ -18,6 +18,7 @@ import javafx.scene.shape.Circle;
 
 import java.io.InputStream;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Random;
 
 import static main.BuyMode.*;
@@ -120,11 +121,17 @@ public class GameController {
      * @author James Howe
      */
     private void setupUpgrades() {
+        ArrayList<String> producerNames = new ArrayList<>();
+        producerNames.add("Ribosome");
+        producerNames.add("Blood");
+        producerNames.add("White Blood Cells");
+        producerNames.add("Spleen");
+        producerNames.add("Lymph Node");
         for (int i = 1; i < this.theModel.getUpgrades().size(); i++) {
             Button gainUp1 = new Button();
             gainUp1.setPrefWidth(248);
             gainUp1.setPrefHeight(30);
-            gainUp1.setText(String.format("P%d Gain 2x",i));
+            gainUp1.setText(String.format("%d Gain 2x",producerNames.get(i - 1)));
             gainUp1.setOnAction(upgradeBuy);
             gainUp1.setId(String.format("P%dG1",i));
             gainUp1.disableProperty().bind(this.theModel.getUpgrades().get(i).purchasedGainX2Property());
@@ -132,7 +139,7 @@ public class GameController {
             Button gainUp2 = new Button();
             gainUp2.setPrefWidth(248);
             gainUp2.setPrefHeight(30);
-            gainUp2.setText(String.format("P%d Gain 8x",i));
+            gainUp2.setText(String.format("%d Gain 8x",producerNames.get(i - 1)));
             gainUp2.setOnAction(upgradeBuy);
             gainUp2.setId(String.format("P%dG2",i));
             gainUp2.disableProperty().bind(this.theModel.getUpgrades().get(i).purchasedGainX8Property());
@@ -140,7 +147,7 @@ public class GameController {
             Button periodUp1 = new Button();
             periodUp1.setPrefWidth(248);
             periodUp1.setPrefHeight(30);
-            periodUp1.setText(String.format("P%d Time .5x",i));
+            periodUp1.setText(String.format("%d Time .5x",producerNames.get(i - 1)));
             periodUp1.setOnAction(upgradeBuy);
             periodUp1.setId(String.format("P%dT3",i));
             periodUp1.disableProperty().bind(this.theModel.getUpgrades().get(i).purchasedPeriodX2Property());
@@ -148,7 +155,7 @@ public class GameController {
             Button periodUp2 = new Button();
             periodUp2.setPrefWidth(248);
             periodUp2.setPrefHeight(30);
-            periodUp2.setText(String.format("P%d Time .25x",i));
+            periodUp2.setText(String.format("%d Time .25x",producerNames.get(i - 1)));
             periodUp2.setOnAction(upgradeBuy);
             periodUp2.setId(String.format("P%dT4",i));
             periodUp2.disableProperty().bind(this.theModel.getUpgrades().get(i).purchasedPeriodX4Property());
