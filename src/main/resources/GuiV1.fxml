@@ -62,7 +62,7 @@
                      <children>
                         <HBox prefHeight="49.0" prefWidth="248.0">
                            <children>
-                              <Button fx:id="P1_btn" mnemonicParsing="false" onAction="#producerBuyHandler" prefHeight="49.0" prefWidth="150.0" text="Buy DNA" />
+                              <Button fx:id="P1_btn" mnemonicParsing="false" onAction="#producerBuyHandler" prefHeight="49.0" prefWidth="150.0" text="Generate DNA" />
                               <VBox prefHeight="49.0" prefWidth="131.0">
                                  <children>
                                     <HBox prefHeight="100.0" prefWidth="200.0">
