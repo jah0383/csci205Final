@@ -47,23 +47,23 @@ class UpgradeTest {
 
     @Test
     void upgradePeriodX4() {
-        assertFalse(testUpgrade.isPurchasedPeriodX4());
+        assertFalse(testUpgrade.getPurchasedPeriodX2());
         assertEquals(1, testUpgrade.getCurrentPeriodMult(), EPSILON);
-        assertTrue(testUpgrade.upgradePeriodX4());
+        assertTrue(testUpgrade.upgradePeriodX2());
         assertEquals(0.25, testUpgrade.getCurrentPeriodMult(), EPSILON);
-        assertTrue(testUpgrade.isPurchasedPeriodX4());
-        testUpgrade.upgradePeriodX16();
+        assertTrue(testUpgrade.getPurchasedPeriodX2());
+        testUpgrade.upgradePeriodX4();
         assertEquals(0.015625, testUpgrade.getCurrentPeriodMult(), EPSILON);
     }
 
     @Test
     void upgradePeriodX16() {
-        assertFalse(testUpgrade.isPurchasedPeriodX16());
+        assertFalse(testUpgrade.getPurchasedPeriodX4());
         assertEquals(1, testUpgrade.getCurrentPeriodMult(), EPSILON);
-        assertTrue(testUpgrade.upgradePeriodX16());
+        assertTrue(testUpgrade.upgradePeriodX4());
         assertEquals(0.0625, testUpgrade.getCurrentPeriodMult(), EPSILON);
-        assertTrue(testUpgrade.isPurchasedPeriodX16());
-        testUpgrade.upgradePeriodX4();
+        assertTrue(testUpgrade.getPurchasedPeriodX4());
+        testUpgrade.upgradePeriodX2();
         assertEquals(0.015625, testUpgrade.getCurrentPeriodMult(), EPSILON);
     }
 }

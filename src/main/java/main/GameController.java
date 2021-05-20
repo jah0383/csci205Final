@@ -143,7 +143,7 @@ public class GameController {
             periodUp1.setText(String.format("P%d Time .5x",i));
             periodUp1.setOnAction(upgradeBuy);
             periodUp1.setId(String.format("P%dT3",i));
-            periodUp1.disableProperty().bind(this.theModel.getUpgrades().get(i).purchasedPeriodX4Property());
+            periodUp1.disableProperty().bind(this.theModel.getUpgrades().get(i).purchasedPeriodX2Property());
 
             Button periodUp2 = new Button();
             periodUp2.setPrefWidth(248);
@@ -151,7 +151,7 @@ public class GameController {
             periodUp2.setText(String.format("P%d Time .25x",i));
             periodUp2.setOnAction(upgradeBuy);
             periodUp2.setId(String.format("P%dT4",i));
-            periodUp2.disableProperty().bind(this.theModel.getUpgrades().get(i).purchasedPeriodX16Property());
+            periodUp2.disableProperty().bind(this.theModel.getUpgrades().get(i).purchasedPeriodX4Property());
 
 
             upgrade_vbox.getChildren().add(gainUp1);
@@ -440,9 +440,9 @@ public class GameController {
     private boolean buyUpgradePeriodX4(Upgrade upgrade){
         long cost = 3000;
         long currentDNA = theModel.getTotalDNA();
-        boolean isPurchased = upgrade.isPurchasedPeriodX4();
+        boolean isPurchased = upgrade.getPurchasedPeriodX2();
         if(!isPurchased && currentDNA >= cost){
-            isPurchased = upgrade.upgradePeriodX4();
+            isPurchased = upgrade.upgradePeriodX2();
             theModel.setTotalDNA(theModel.getTotalDNA() - cost);
         }
         return isPurchased;
@@ -458,9 +458,9 @@ public class GameController {
     private boolean buyUpgradePeriodX16(Upgrade upgrade){
         long cost = 30000;
         long currentDNA = theModel.getTotalDNA();
-        boolean isPurchased = upgrade.isPurchasedPeriodX16();
+        boolean isPurchased = upgrade.getPurchasedPeriodX4();
         if(!isPurchased && currentDNA >= cost){
-            isPurchased = upgrade.upgradePeriodX16();
+            isPurchased = upgrade.upgradePeriodX4();
             theModel.setTotalDNA(theModel.getTotalDNA() - cost);
         }
         return isPurchased;

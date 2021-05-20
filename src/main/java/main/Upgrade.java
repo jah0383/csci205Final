@@ -25,8 +25,8 @@ public class Upgrade{
     private String name;
     private SimpleBooleanProperty purchasedGainX2;
     private SimpleBooleanProperty purchasedGainX8;
+    private SimpleBooleanProperty purchasedPeriodX2;
     private SimpleBooleanProperty purchasedPeriodX4;
-    private SimpleBooleanProperty purchasedPeriodX16;
 
     /**
      * Creates an Upgrade object that is linked to a specific producer.
@@ -39,8 +39,8 @@ public class Upgrade{
         this.name = name;
         this.purchasedGainX2 = new SimpleBooleanProperty(false);
         this.purchasedGainX8 = new SimpleBooleanProperty(false);
+        this.purchasedPeriodX2 = new SimpleBooleanProperty(false);
         this.purchasedPeriodX4 = new SimpleBooleanProperty(false);
-        this.purchasedPeriodX16 = new SimpleBooleanProperty(false);
     }
 
     public double getCurrentGainMult(){
@@ -96,7 +96,22 @@ public class Upgrade{
     }
 
     /**
-     * Multiplies the current gain multiplier for the producer by 2, then sets the boolean PurchasedPeriodX4 to true
+     * Multiplies the current gain multiplier for the producer by .5, then sets the boolean PurchasedPeriodX2 to true
+     * @return The boolean value of PurchasedPeriodX2, True if successful, false is unsuccessful
+     * @author Michael Gertz
+     */
+    public boolean upgradePeriodX2(){
+        double currentPeriodMult = getCurrentPeriodMult();
+        double newPeriodMult = currentPeriodMult / 2;
+        onPeriodPurchase(newPeriodMult);
+        this.purchasedPeriodX2.set(true);
+        return this.purchasedPeriodX2.get();
+    }
+
+
+
+    /**
+     * Multiplies the current gain multiplier for the producer by .25, then sets the boolean PurchasedPeriodX4 to true
      * @return The boolean value of PurchasedPeriodX4, True if successful, false is unsuccessful
      * @author Michael Gertz
      */
@@ -106,21 +121,6 @@ public class Upgrade{
         onPeriodPurchase(newPeriodMult);
         this.purchasedPeriodX4.set(true);
         return this.purchasedPeriodX4.get();
-    }
-
-
-
-    /**
-     * Multiplies the current gain multiplier for the producer by 2, then sets the boolean PurchasedPeriodX16 to true
-     * @return The boolean value of PurchasedPeriodX16, True if successful, false is unsuccessful
-     * @author Michael Gertz
-     */
-    public boolean upgradePeriodX16(){
-        double currentPeriodMult = getCurrentPeriodMult();
-        double newPeriodMult = currentPeriodMult / 16;
-        onPeriodPurchase(newPeriodMult);
-        this.purchasedPeriodX16.set(true);
-        return this.purchasedPeriodX16.get();
     }
 
     public boolean isPurchasedGainX2() {
@@ -139,19 +139,19 @@ public class Upgrade{
         return purchasedGainX8;
     }
 
-    public boolean isPurchasedPeriodX4() {
+    public boolean getPurchasedPeriodX2() {
+        return purchasedPeriodX2.get();
+    }
+
+    public SimpleBooleanProperty purchasedPeriodX2Property() {
+        return purchasedPeriodX2;
+    }
+
+    public boolean getPurchasedPeriodX4() {
         return purchasedPeriodX4.get();
     }
 
     public SimpleBooleanProperty purchasedPeriodX4Property() {
         return purchasedPeriodX4;
-    }
-
-    public boolean isPurchasedPeriodX16() {
-        return purchasedPeriodX16.get();
-    }
-
-    public SimpleBooleanProperty purchasedPeriodX16Property() {
-        return purchasedPeriodX16;
     }
 }
